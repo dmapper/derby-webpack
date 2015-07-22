@@ -1,9 +1,9 @@
-# derby-webpack-example
-> Derby.js example app with server and client side bundling through Webpack.
+# derby-webpack
+> Derby.js client and server bundling through Webpack.
 
 ## Usage
 
-`npm start`
+TBD
 
 ## Why
 
