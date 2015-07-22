@@ -17,7 +17,6 @@
   "dependencies": {
     "async": "^1.3.0",
     "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.9.3",
     "css-loader": "git@github.com:dmapper/css-loader.git",
     "deep-merge": "^1.0.0",
     "derby-jade": "git@github.com:derbyparty/derby-jade#module-mode",
@@ -41,6 +40,7 @@
     "derby-templates": "*"
   },
   "devDependencies": {
+    "coffee-script": "^1.9.3",
     "derby-dev-helpers": "^0.1.2"
   }
 }
