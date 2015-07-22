@@ -1,0 +1,14 @@
+{
+  "APP": "test",
+  "APP_NAME": "Test",
+  "STAGE": "development",
+  "NODE_ENV": "development",
+  "PORT": 3001,
+  "BASE_URL": "http://localhost:3001",
+  "MONGO_URL": "mongodb://localhost:27017/test_webpack",
+  "SESSION_SECRET": "foobar",
+  "SESSION_COOKIE": "foobar",
+  "ADMINS": [],
+  "COPY_TO_ENV": ["NODE_ENV", "PORT"],
+  "PUBLIC": ["PUBLIC", "BASE_URL", "NODE_ENV", "STAGE"]
+}

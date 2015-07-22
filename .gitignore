@@ -1,0 +1,77 @@
+ngrok
+.DS_Store
+/public/gen
+/build/
+*.swp
+/node_modules/
+/.idea/
+Gemfile.lock
+/tmp/
+/temp/
+*.orig
+npm-debug.log
+
+# Derby bundle folder
+/public/derby/
+hashes.json
+
+# bundles
+**/derby-serialized
+
+# Bower installation
+/bower_components/
+
+# Compiled and minified assets
+/public/css/*
+!/public/css/vendor/
+/public/js/minified/
+/public/js/compiled/
+
+# Compiled constants
+/src/const/json/
+/src/*/*/const/json/
+
+# Exclude all fontello files except needed ones.
+/public/fonts/fontello-*
+/public/fonts/fontello/*
+!/public/fonts/fontello/config.json
+!/public/fonts/fontello/css/
+/public/fonts/fontello/css/*
+!/public/fonts/fontello/css/fontello-codes.css
+!/public/fonts/fontello/font/
+
+# Exclude compiled sprite images
+/public/img/sprites/
+
+# Exclude vendor fonts
+/public/fonts/vendor/
+
+# Exclude fontello temp files which may accidently remain in root folder
+/.fontello
+/.fontello.zip
+/.fontello.src
+
+# Exclude css vendor files
+/styles/vendor/*
+# Except the main one with overrides and custom ones (converted manually)
+!/styles/vendor/index.styl
+
+# Exclude Test screenshots
+/test/screenshots/
+/test/screenshots.tar.gz
+/test/results.json
+/test/results_unit.html
+/test/results.html
+
+# Exclude coverage results
+/test/coverage.html
+
+/temp_prices
+/src/games/prices/screenshots
+
+# Upload folder
+/public/store/
+/public/store
+
+# Python
+*.pyc
