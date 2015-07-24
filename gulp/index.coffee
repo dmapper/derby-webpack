@@ -5,7 +5,7 @@ _ = require 'lodash'
 
 module.exports = (options = {}) ->
   _.defaults options,
-    dirname: path.dirname path.dirname __dirname
+    dirname: path.dirname path.dirname path.dirname __dirname
     frontend: {}
     backend: {}
 
