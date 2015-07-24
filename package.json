@@ -31,7 +31,8 @@
     "style-loader": "git@github.com:dmapper/style-loader.git",
     "stylus-loader": "^1.2.1",
     "webpack": "^1.10.1",
-    "webpack-dev-server": "^1.10.1"
+    "webpack-dev-server": "^1.10.1",
+    "yaml-loader": "^0.1.0"
   },
   "peerDependencies": {
     "derby": "*",

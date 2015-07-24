@@ -25,7 +25,12 @@ module.exports = (options) ->
       ,
         include: /\.json$/
         loader: 'json'
+      ,
+        include: /\.yaml$/
+        loader: 'json!yaml'
       ]
+    resolveLoader:
+      root: __dirname + '/../node_modules'
     resolve:
       extensions: ['', '.json', '.js', '.coffee']
 
