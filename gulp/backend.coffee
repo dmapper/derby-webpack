@@ -46,4 +46,6 @@ module.exports = (options) ->
       unless firedDone
         firedDone = true
         done()
-      nodemon.restart()
+      setTimeout ->
+        nodemon.restart()
+      , (options.restartTimeout || 0)
