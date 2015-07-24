@@ -13,7 +13,7 @@ module.exports = (options) ->
       __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:3000'
       __dirname + '/../node_modules/webpack/hot/dev-server'
       __dirname + '/../node_modules/racer-highway/lib/browser'
-      __dirname + '/../node_modules/derby-parsing'
+      options.dirname + '/node_modules/derby-parsing'
     ].concat(options.frontend.entry || [options.dirname + '/app'])
     module:
       loaders: [
