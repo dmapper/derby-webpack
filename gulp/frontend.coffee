@@ -25,9 +25,6 @@ module.exports = (options) ->
       ,
         include: /racer-highway\/lib\/browser\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
-      ,
-        include: /\.json$/
-        loader: 'json'
       ]
 
     output:

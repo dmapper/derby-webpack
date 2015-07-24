@@ -10,18 +10,21 @@ module.exports = (options) ->
   config =
     module:
       loaders: [
-          test: /\.jade$/
-          loaders: [__dirname + '/../loaders/derby-jade-loader']
-        ,
-          include: /\.coffee$/
-          loader: "coffee"
-          exclude: [
-            /\/components\/.+\.coffee$/
-            #/node_modules/
-          ]
-        ,
-          include: /\/components\/.+\.coffee$/
-          loaders: [__dirname + '/../loaders/derby-component-loader', 'coffee']
+        test: /\.jade$/
+        loaders: [__dirname + '/../loaders/derby-jade-loader']
+      ,
+        include: /\.coffee$/
+        loader: "coffee"
+        exclude: [
+          /\/components\/.+\.coffee$/
+          #/node_modules/
+        ]
+      ,
+        include: /\/components\/.+\.coffee$/
+        loaders: [__dirname + '/../loaders/derby-component-loader', 'coffee']
+      ,
+        include: /\.json$/
+        loader: 'json'
       ]
     resolve:
       extensions: ['', '.json', '.js', '.coffee']
