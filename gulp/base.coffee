@@ -17,10 +17,14 @@ module.exports = (options) ->
         loader: "coffee"
         exclude: [
           /\/components\/.+\.coffee$/
+          /\/pages\/.+\.coffee$/
           #/node_modules/
         ]
       ,
-        include: /\/components\/.+\.coffee$/
+        include: [
+          /\/components\/.+\.coffee$/
+          /\/pages\/.+\.coffee$/
+        ]
         loaders: [__dirname + '/../loaders/derby-component-loader', 'coffee']
       ,
         include: /\.json$/
