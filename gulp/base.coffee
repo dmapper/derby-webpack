@@ -32,7 +32,7 @@ module.exports = (options) ->
     resolveLoader:
       root: __dirname + '/../node_modules'
     resolve:
-      extensions: ['', '.json', '.js', '.coffee']
+      extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
   unless process.env.NODE_ENV is 'production'
     config.devtool = 'source-map'
