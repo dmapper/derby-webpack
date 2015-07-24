@@ -30,7 +30,7 @@ module.exports = (options) ->
     externals: nodeModules
     recordsPath: options.dirname + '/build/_records'
     plugins: [
-      new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, 'node-noop')
+      new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, __dirname + '/../node_modules/node-noop')
       #new webpack.IgnorePlugin(/\.(css|styl)$/)
       #new webpack.BannerPlugin('require("source-map-support").install();',
       #                          { raw: true, entryOnly: false }),
