@@ -30,7 +30,7 @@ module.exports = (options) ->
         loader: 'json!yaml'
       ]
     resolveLoader:
-      root: __dirname + '/../node_modules'
+      root: __dirname + '/../'
     resolve:
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
