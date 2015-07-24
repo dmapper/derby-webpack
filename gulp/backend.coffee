@@ -6,7 +6,7 @@ _ = require 'lodash'
 WebpackDevServer = require 'webpack-dev-server'
 nodemon = require 'nodemon'
 
-module.export = (options) ->
+module.exports = (options) ->
   base = require('./base') options
 
   nodeModules = {}
