@@ -19,7 +19,7 @@ module.exports = (options) ->
   config = base.config
     entry: [
       #'webpack/hot/signal.js',
-    ].concat(options.backend.entry || ['./server'])
+    ].concat(options.backend.entry || [options.dirname + '/server'])
     target: 'node'
     output:
       path: options.dirname + '/build'

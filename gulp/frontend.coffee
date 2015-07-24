@@ -10,11 +10,11 @@ module.exports = (options) ->
   config = base.config
     target: 'web'
     entry: [
-      'webpack-dev-server/client?http://localhost:3000'
-      'webpack/hot/dev-server'
-      'racer-highway/lib/browser'
-      'derby-parsing'
-    ].concat(options.frontend.entry || ['./app'])
+      __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:3000'
+      __dirname + '/../node_modules/webpack/hot/dev-server'
+      __dirname + '/../node_modules/racer-highway/lib/browser'
+      __dirname + '/../node_modules/derby-parsing'
+    ].concat(options.frontend.entry || [options.dirname + '/app'])
     module:
       loaders: [
         test: /\.css$/
