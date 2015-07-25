@@ -5,6 +5,7 @@ fs = require 'fs'
 _ = require 'lodash'
 WebpackDevServer = require 'webpack-dev-server'
 nodemon = require 'nodemon'
+first = true
 
 module.exports = (options) ->
   base = require('./base') options
@@ -47,5 +48,8 @@ module.exports = (options) ->
         firedDone = true
         done()
       setTimeout ->
-        nodemon.restart()
+        if first
+          first = false
+        else
+          nodemon.restart()
       , (options.restartTimeout || 0)
