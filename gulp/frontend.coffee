@@ -35,6 +35,7 @@ module.exports = (options) ->
     plugins: [
       new webpack.HotModuleReplacementPlugin(quiet: true)
     ]
+    stylus: options.stylus || {}
 
   gulp.task 'frontend-build', (done) ->
     webpack(config).run base.onBuild(done)
