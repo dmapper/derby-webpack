@@ -8,6 +8,8 @@ module.exports = (options = {}) ->
     dirname: path.dirname path.dirname path.dirname __dirname
     frontend: {}
     backend: {}
+    webpackPort: 3010
+    serverPort: 3000
 
   require('./frontend') options
   require('./backend') options

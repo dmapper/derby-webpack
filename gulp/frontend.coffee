@@ -10,7 +10,7 @@ module.exports = (options) ->
   config = base.config
     target: 'web'
     entry: [
-      __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:3000'
+      __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:' + options.webpackPort
       __dirname + '/../node_modules/webpack/hot/dev-server'
       __dirname + '/../node_modules/racer-highway/lib/browser'
       options.dirname + '/node_modules/derby-parsing'
@@ -30,7 +30,7 @@ module.exports = (options) ->
     output:
       path: options.dirname + '/client'
       pathInfo: true
-      publicPath: 'http://localhost:3000/client/'
+      publicPath: "http://localhost:#{ options.webpackPort }/client/"
       filename: 'main.js'
     plugins: [
       new webpack.HotModuleReplacementPlugin(quiet: true)
@@ -50,11 +50,11 @@ module.exports = (options) ->
       stats: colors: true
       noInfo: true
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3001',
+        'Access-Control-Allow-Origin': "http://localhost:#{ options.serverPort }",
         'Access-Control-Allow-Headers': 'X-Requested-With'
       }
-    ).listen 3000, 'localhost', (err, result) ->
+    ).listen options.webpackPort, 'localhost', (err, result) ->
       if err
         console.log err
       else
-        console.log 'webpack dev server listening at localhost:3000'
+        console.log "webpack dev server listening at localhost:#{ options.webpackPort }"
