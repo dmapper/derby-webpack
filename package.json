@@ -21,7 +21,7 @@
     "css-loader": "git@github.com:dmapper/css-loader.git",
     "csswring": "^3.0.5",
     "deep-merge": "^1.0.0",
-    "derby-jade": "git@github.com:derbyparty/derby-jade#module-mode",
+    "derby-jade": "^0.6.18",
     "derby-stylus": "^0.1.0",
     "gulp": "^3.9.0",
     "json-loader": "^0.5.2",
