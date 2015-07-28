@@ -18,10 +18,10 @@ module.exports = (options) ->
     module:
       loaders: [
         test: /\.css$/
-        loader: 'style!css?module&localIdentName=[component]-[local]'
+        loader: "style!autoprefixer?{browsers:['last 2 version', '> 1%', 'ie 10', 'android 4']}!css?module&localIdentName=[component]-[local]"
       ,
         test: /\.styl$/
-        loader: 'style!css?module&localIdentName=[component]-[local]!stylus'
+        loaders: "style!autoprefixer?{browsers:['last 2 version', '> 1%', 'ie 10', 'android 4']}!css?module&localIdentName=[component]-[local]!stylus"
       ,
         include: /racer-highway\/lib\/browser\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
