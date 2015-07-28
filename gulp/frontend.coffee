@@ -23,7 +23,7 @@ module.exports = (options) ->
         loader: 'style!css?module&localIdentName=[component]-[local]!postcss'
       ,
         test: /\.styl$/
-        loaders: 'style!css?module&localIdentName=[component]-[local]!postcss!stylus'
+        loader: 'style!css?module&localIdentName=[component]-[local]!postcss!stylus'
       ,
         include: /racer-highway\/lib\/browser\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
