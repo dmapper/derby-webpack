@@ -39,7 +39,7 @@ module.exports = (options) ->
     ]
 
   gulp.task 'backend-build', (done) ->
-    webpack(config).run onBuild(done)
+    webpack(config).run base.onBuild(done)
 
   gulp.task 'backend-watch', (done) ->
     firedDone = false
