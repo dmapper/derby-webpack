@@ -41,22 +41,22 @@ module.exports = (options) ->
     plugins: []
     stylus: options.stylus || {}
 
-  # Add webpack-dev-server and hot reloading
-  if process.env.NODE_ENV isnt 'production'
+  gulp.task 'frontend-build', (done) ->
+    webpack(config).run base.onBuild(done)
+
+  gulp.task 'frontend-watch', ->
+
+    # Add webpack-dev-server and hot reloading
     for name, entry of config.entry
       config.entry[name] = [
         __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:' + options.webpackPort
         __dirname + '/../node_modules/webpack/hot/dev-server'
       ].concat (entry || [])
+      
     config.plugins = [
       new webpack.HotModuleReplacementPlugin(quiet: true)
     ].concat (config.plugins || [])
 
-  gulp.task 'frontend-build', (done) ->
-    process.env.NODE_ENV = 'production'
-    webpack(config).run base.onBuild(done)
-
-  gulp.task 'frontend-watch', ->
     new WebpackDevServer(webpack(config),
       publicPath: '/build/client/'
       hot: true
