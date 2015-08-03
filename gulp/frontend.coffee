@@ -42,7 +42,7 @@ module.exports = (options) ->
     stylus: options.stylus || {}
 
   # Add webpack-dev-server and hot reloading
-  if process.env.NODE_ENV is 'production'
+  if process.env.NODE_ENV isnt 'production'
     for name, entry of config.entry
       config.entry[name] = [
         __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:' + options.webpackPort
