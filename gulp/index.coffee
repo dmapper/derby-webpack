@@ -14,6 +14,7 @@ module.exports = (options = {}) ->
       /\/components\/.+\.coffee$/
       /\/pages\/.+\.coffee$/
     ]
+    apps: ['app']
 
   require('./frontend') options
   require('./backend') options

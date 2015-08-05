@@ -5,17 +5,33 @@ _ = require 'lodash'
 WebpackDevServer = require 'webpack-dev-server'
 autoprefixer = require('autoprefixer-core')
 csswring = require('csswring')
+_ = require 'lodash'
 
 module.exports = (options) ->
   base = require('./base') options
 
   config = base.config
     target: 'web'
-    entry:
-      app: [
+    entry: do ->
+      res = {}
+      baseEntry = [
         __dirname + '/../node_modules/racer-highway/lib/browser'
         options.dirname + '/node_modules/derby-parsing'
-      ].concat(options.frontend.entry || [options.dirname + '/app'])
+      ].concat (options.frontend.baseEntry || [])
+
+      # If apps are passed as array we treat them as folders in project root
+      apps = {}
+      if _.isArray(options.apps)
+        for appName in options.apps
+          apps[appName] = options.dirname + '/' + app
+      else
+        apps = options.apps
+
+      for appName, entry of options.apps
+        entry = [entry] unless _.isArray(entry)
+        res[appName] = baseEntry.concat entry
+      res
+
     module:
       loaders: [
         test: /\.css$/
