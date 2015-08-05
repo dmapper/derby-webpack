@@ -1,7 +1,7 @@
 var defaultClientOptions = {
   base: '/channel',
   reconnect: true,
-  browserChannelOnly: true,
+  browserChannelOnly: false,
   srvPort: undefined,
   srvSecurePort: undefined,
   timeout: 10000,
