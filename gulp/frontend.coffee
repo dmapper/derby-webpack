@@ -27,7 +27,7 @@ module.exports = (options) ->
       else
         apps = options.apps
 
-      for appName, entry of options.apps
+      for appName, entry of apps
         entry = [entry] unless _.isArray(entry)
         res[appName] = baseEntry.concat entry
       res
