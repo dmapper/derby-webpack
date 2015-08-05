@@ -11,7 +11,7 @@ module.exports = (options) ->
     module:
       loaders: [
         test: /\.jade$/
-        loaders: [__dirname + '/../loaders/derby-jade-loader']
+        loaders: [__dirname + "/../loaders/derby-jade-loader?#{ options.moduleMode ? 'module' : '' }"]
       ,
         include: /\.coffee$/
         loader: "coffee"

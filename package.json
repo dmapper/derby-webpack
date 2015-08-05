@@ -25,6 +25,7 @@
     "derby-stylus": "^0.1.0",
     "gulp": "^3.9.0",
     "json-loader": "^0.5.2",
+    "loader-utils": "^0.2.11",
     "lodash": "^3.10.0",
     "node-libs-browser": "^0.5.2",
     "node-noop": "0.0.1",

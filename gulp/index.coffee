@@ -10,6 +10,7 @@ module.exports = (options = {}) ->
     backend: {}
     webpackPort: 3010
     serverPort: 3000
+    moduleMode: false
     componentsPaths: [
       /\/components\/.+\.coffee$/
       /\/pages\/.+\.coffee$/

@@ -3,17 +3,22 @@ var derbyJade = require('derby-jade');
 var derbyTemplates = require('derby-templates');
 var path = require('path');
 var async = require('async');
+var loaderUtils = require("loader-utils");
 require('derby-parsing');
 
-var dummyApp = {
-  compilers: [],
-  viewExtensions: []
-};
-derbyJade(dummyApp, {globals: {moduleMode: true}});
-
 module.exports = function(source) {
+
   this.cacheable();
   var cb = this.async();
+
+  var query = loaderUtils.parseQuery(this.query);
+  var moduleMode = query.modules || query.module;
+
+  var dummyApp = {
+    compilers: [],
+    viewExtensions: []
+  };
+  derbyJade(dummyApp, {globals: {moduleMode: moduleMode}});
 
   var that = this;
   var locals = {};
