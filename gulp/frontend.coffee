@@ -23,7 +23,7 @@ module.exports = (options) ->
       apps = {}
       if _.isArray(options.apps)
         for appName in options.apps
-          apps[appName] = options.dirname + '/' + app
+          apps[appName] = options.dirname + '/' + appName
       else
         apps = options.apps
 
