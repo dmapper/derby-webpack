@@ -15,16 +15,9 @@ module.exports = (options) ->
       ,
         include: /\.coffee$/
         loader: "coffee"
-        exclude: [
-          /\/components\/.+\.coffee$/
-          /\/pages\/.+\.coffee$/
-          #/node_modules/
-        ]
+        exclude: options.componentsPaths
       ,
-        include: [
-          /\/components\/.+\.coffee$/
-          /\/pages\/.+\.coffee$/
-        ]
+        include: options.componentsPaths
         loaders: [__dirname + '/../loaders/derby-component-loader', 'coffee']
       ,
         include: /\.json$/

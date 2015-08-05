@@ -10,6 +10,10 @@ module.exports = (options = {}) ->
     backend: {}
     webpackPort: 3010
     serverPort: 3000
+    componentsPaths: [
+      /\/components\/.+\.coffee$/
+      /\/pages\/.+\.coffee$/
+    ]
 
   require('./frontend') options
   require('./backend') options
