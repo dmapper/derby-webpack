@@ -35,10 +35,10 @@ module.exports = (options) ->
     module:
       loaders: [
         test: /\.css$/
-        loader: "style!css?#{ if options.moduleMode then 'module' else '' }localIdentName=[component]-[local]!postcss"
+        loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
       ,
         test: /\.styl$/
-        loader: "style!css?#{ if options.moduleMode then 'module' else '' }localIdentName=[component]-[local]!postcss!stylus"
+        loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
       ,
         include: /racer-highway\/lib\/browser\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
