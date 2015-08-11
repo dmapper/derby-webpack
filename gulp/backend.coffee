@@ -12,8 +12,9 @@ module.exports = (options) ->
 
   nodeModules = {}
   fs.readdirSync(options.dirname + '/node_modules')
-    .filter (x) ->
-      ['.bin'].indexOf(x) is -1
+    .filter (name) ->
+      # Bundle only derby components from node_modules
+      name isnt '.bin' and not /^dm-/.test(name) and not /^d-/.test(name)
     .forEach (mod) ->
       nodeModules[mod] = 'commonjs ' + mod
 
