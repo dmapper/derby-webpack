@@ -41,7 +41,10 @@ module.exports = (options) ->
 
   gulp.task 'backend-build', (done) ->
     config.plugins = [
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin({
+        compress:
+          warnings: false
+      })
     ].concat (config.plugins || [])
 
     webpack(config).run base.onBuild(done)
