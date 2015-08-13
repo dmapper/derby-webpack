@@ -58,6 +58,10 @@ module.exports = (options) ->
     stylus: options.stylus || {}
 
   gulp.task 'frontend-build', (done) ->
+    config.plugins = [
+      new webpack.optimize.UglifyJsPlugin()
+    ].concat (config.plugins || [])
+
     webpack(config).run base.onBuild(done)
 
   gulp.task 'frontend-watch', ->

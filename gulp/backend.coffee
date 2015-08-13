@@ -40,6 +40,10 @@ module.exports = (options) ->
     ]
 
   gulp.task 'backend-build', (done) ->
+    config.plugins = [
+      new webpack.optimize.UglifyJsPlugin()
+    ].concat (config.plugins || [])
+
     webpack(config).run base.onBuild(done)
 
   gulp.task 'backend-watch', (done) ->
