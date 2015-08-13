@@ -41,7 +41,6 @@ module.exports = (options) ->
     postcss: ->
       [
         autoprefixer(browsers: ['last 2 version', '> 1%', 'ie 10', 'android 4'])
-        #csswring # minification
       ]
 
     output:
@@ -58,12 +57,18 @@ module.exports = (options) ->
 
   gulp.task 'frontend-build', (done) ->
 
+    config.postcss = ->
+      [
+        autoprefixer(browsers: ['last 2 version', '> 1%', 'ie 10', 'android 4'])
+        csswring() # minification
+      ]
+
     config.module.loaders = [
       test: /\.css$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss"
     ,
       test: /\.styl$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus"
     ].concat config.module.loaders
 
     config.plugins = [
