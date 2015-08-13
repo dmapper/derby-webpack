@@ -23,6 +23,7 @@
     "deep-merge": "^1.0.0",
     "derby-jade": "^0.6.18",
     "derby-stylus": "^0.1.0",
+    "extract-text-webpack-plugin": "^0.8.2",
     "gulp": "^3.9.0",
     "json-loader": "^0.5.2",
     "loader-utils": "^0.2.11",

@@ -6,6 +6,7 @@ WebpackDevServer = require 'webpack-dev-server'
 autoprefixer = require('autoprefixer-core')
 csswring = require('csswring')
 _ = require 'lodash'
+ExtractTextPlugin = require 'extract-text-webpack-plugin'
 
 module.exports = (options) ->
   base = require('./base') options
@@ -34,12 +35,6 @@ module.exports = (options) ->
 
     module:
       loaders: [
-        test: /\.css$/
-        loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
-      ,
-        test: /\.styl$/
-        loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
-      ,
         include: /racer-highway\/lib\/browser\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
       ]
@@ -57,8 +52,22 @@ module.exports = (options) ->
     plugins: []
     stylus: options.stylus || {}
 
+  # ----------------------------------------------------------------
+  #   Build (Production)
+  # ----------------------------------------------------------------
+
   gulp.task 'frontend-build', (done) ->
+
+    config.module.loaders = [
+      test: /\.css$/
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
+    ,
+      test: /\.styl$/
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
+    ].concat config.module.loaders
+
     config.plugins = [
+      new ExtractTextPlugin('[name].css')
       new webpack.optimize.UglifyJsPlugin({
         compress:
           warnings: false
@@ -67,7 +76,19 @@ module.exports = (options) ->
 
     webpack(config).run base.onBuild(done)
 
+  # ----------------------------------------------------------------
+  #   Watch (Development)
+  # ----------------------------------------------------------------
+
   gulp.task 'frontend-watch', ->
+
+    config.module.loaders = [
+      test: /\.css$/
+      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
+    ,
+      test: /\.styl$/
+      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
+    ].concat config.module.loaders
 
     # Add webpack-dev-server and hot reloading
     for name, entry of config.entry
