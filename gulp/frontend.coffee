@@ -68,7 +68,7 @@ module.exports = (options) ->
       loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss"
     ,
       test: /\.styl$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus"
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?include css"
     ].concat config.module.loaders
 
     config.plugins = [
@@ -92,7 +92,7 @@ module.exports = (options) ->
       loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
     ,
       test: /\.styl$/
-      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus"
+      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?include css"
     ].concat config.module.loaders
 
     # Add webpack-dev-server and hot reloading
