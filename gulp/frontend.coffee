@@ -11,6 +11,11 @@ ExtractTextPlugin = require 'extract-text-webpack-plugin'
 module.exports = (options) ->
   base = require('./base') options
 
+  stylusParams = _.merge
+    'include css': true
+  , options.stylus || {}
+  stylusParams = JSON.stringify stylusParams
+
   config = base.config
     target: 'web'
     entry: do ->
@@ -49,7 +54,6 @@ module.exports = (options) ->
       publicPath: "http://localhost:#{ options.webpackPort }/build/client/"
       filename: '[name].js'
     plugins: []
-    stylus: options.stylus || {}
 
   # ----------------------------------------------------------------
   #   Build (Production)
@@ -68,7 +72,7 @@ module.exports = (options) ->
       loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss"
     ,
       test: /\.styl$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?include css"
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
     ].concat config.module.loaders
 
     config.plugins = [
@@ -92,7 +96,7 @@ module.exports = (options) ->
       loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
     ,
       test: /\.styl$/
-      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?include css"
+      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
     ].concat config.module.loaders
 
     # Add webpack-dev-server and hot reloading
