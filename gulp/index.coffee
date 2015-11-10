@@ -11,10 +11,6 @@ module.exports = (options = {}) ->
     webpackPort: 3010
     serverPort: 3000
     moduleMode: false
-    componentsPaths: [
-      /\/components\/.+\.coffee$/
-      /\/pages\/.+\.coffee$/
-    ]
     apps: ['app']
 
   require('./frontend') options
