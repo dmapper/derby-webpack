@@ -10,14 +10,6 @@ first = true
 module.exports = (options) ->
   base = require('./base') options
 
-  nodeModules = {}
-  fs.readdirSync(options.dirname + '/node_modules')
-    .filter (name) ->
-      # Bundle only derby components from node_modules
-      name isnt '.bin' and not /^dm-/.test(name) and not /^d-/.test(name)
-    .forEach (mod) ->
-      nodeModules[mod] = 'commonjs ' + mod
-
   config = base.config
     entry: [
       #'webpack/hot/signal.js',
@@ -29,7 +21,28 @@ module.exports = (options) ->
     node:
       __dirname: true
       __filename: true
-    externals: nodeModules
+
+    # Treat any module in node_modules or required from any module
+    # within node_modules as an external dependency.
+    # Bundle only modules which are derby components.
+    externals: do ->
+
+      # Get list of modules excluding derby components (dm- or d-)
+      nodeModules = fs.readdirSync(options.dirname + '/node_modules').filter (name) ->
+        name isnt '.bin' and not /^dm-/.test(name) and not /^d-/.test(name)
+
+      (context, request, cb) ->
+        inModules = false
+        for moduleName in nodeModules
+          if /// node_modules\/#{ moduleName } ///.test(context) or
+              /// ^#{ moduleName } ///.test(request)
+            inModules = true
+            break
+        if inModules
+          cb null, "commonjs #{ request }"
+        else
+          cb()
+
     recordsPath: options.dirname + '/build/_records'
     plugins: [
       new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, __dirname + '/../node_modules/node-noop')
