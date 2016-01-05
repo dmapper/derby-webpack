@@ -40,7 +40,7 @@ module.exports = (options) ->
 
     module:
       loaders: [
-        include: /racer-highway\/lib\/browser\.js$/
+        include: /racer-highway\/lib\/browser\/index\.js$/
         loaders: [__dirname + '/../loaders/racer-highway-loader.js']
       ]
     postcss: ->
