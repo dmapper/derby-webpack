@@ -14,10 +14,10 @@ module.exports = (options) ->
         loaders: [__dirname + "/../loaders/derby-jade-loader?#{ if options.moduleMode then 'module' else '' }"]
       ,
         include: /\.coffee$/
-        loader: [__dirname + '/../loaders/derby-loader', 'coffee']
+        loaders: [__dirname + '/../loaders/derby-loader', 'coffee']
       ,
         include: /\.js$/
-        loader: [__dirname + '/../loaders/derby-loader']
+        loaders: [__dirname + '/../loaders/derby-loader']
       ,
         include: /\.json$/
         loader: 'json'
