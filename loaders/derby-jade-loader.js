@@ -14,7 +14,7 @@ module.exports = function(source) {
   var moduleMode = query.modules || query.module;
 
   var compiler = function(file, fileName) {
-    derbyJade.compiler(file, fileName, undefined, {moduleMode: moduleMode})
+    return derbyJade.compiler(file, fileName, undefined, {moduleMode: moduleMode});
   };
 
   var that = this;
