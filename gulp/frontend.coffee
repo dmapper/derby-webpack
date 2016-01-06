@@ -62,7 +62,10 @@ module.exports = (options) ->
       pathInfo: true
       publicPath: "http://localhost:#{ options.webpackPort }/build/client/"
       filename: '[name].js'
-    plugins: []
+    plugins: [
+      # Don't bundle server-specific modules on client
+      new webpack.IgnorePlugin(/\.(server|server\.coffee|server\.js)$/)
+    ]
 
   # ----------------------------------------------------------------
   #   Build (Production)
