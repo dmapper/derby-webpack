@@ -17,7 +17,6 @@ module.exports = (options) ->
   stylusParams = _.merge
     'include css': true
   , options.stylus || {}
-  stylusParams = JSON.stringify stylusParams
 
   config = base.config
     target: 'web'
@@ -82,13 +81,13 @@ module.exports = (options) ->
           return null unless fs.existsSync(beforeStyl)
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
-            absPath.indexOf( entry ) isnt -1
-          loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+            /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
+          loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
     ).filter((item) -> item?)
 
     config.module.loaders.push
       test: /\.styl$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     config.plugins = [
       new ExtractTextPlugin('[name].css')
@@ -119,13 +118,13 @@ module.exports = (options) ->
           return null unless fs.existsSync(beforeStyl)
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
-            absPath.indexOf( entry ) isnt -1
-          loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+            /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
+          loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
     ).filter((item) -> item?)
 
     config.module.loaders.push
       test: /\.styl$/
-      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     # Add webpack-dev-server and hot reloading
     for name, entry of config.entry
