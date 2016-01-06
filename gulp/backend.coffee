@@ -47,8 +47,14 @@ module.exports = (options) ->
     plugins: [
       new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, __dirname + '/../node_modules/node-noop')
       #new webpack.IgnorePlugin(/\.(css|styl)$/)
-      new webpack.BannerPlugin('require("source-map-support").install();',
-                                { raw: true, entryOnly: false }),
+      new webpack.BannerPlugin([
+        'try {'
+      , '  require.resolve("source-map-support");'
+      , '  require("source-map-support").install();'
+      , '} catch(e) {'
+      , '  require("derby-webpack/node_modules/source-map-support").install();'
+      , '}'
+      ].join(' '), { raw: true, entryOnly: false }),
       #new webpack.HotModuleReplacementPlugin({ quiet: true })
     ]
 
