@@ -6,7 +6,10 @@ WebpackDevServer = require 'webpack-dev-server'
 autoprefixer = require('autoprefixer-core')
 csswring = require('csswring')
 _ = require 'lodash'
+fs = require 'fs'
 ExtractTextPlugin = require 'extract-text-webpack-plugin'
+
+apps = {}
 
 module.exports = (options) ->
   base = require('./base') options
@@ -26,7 +29,6 @@ module.exports = (options) ->
       ].concat (options.frontend.baseEntry || [])
 
       # If apps are passed as array we treat them as folders in project root
-      apps = {}
       if _.isArray(options.apps)
         for appName in options.apps
           apps[appName] = options.dirname + '/' + appName
@@ -67,13 +69,26 @@ module.exports = (options) ->
         csswring() # minification
       ]
 
-    config.module.loaders = [
+    config.module.loaders.push
       test: /\.css$/
       loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss"
-    ,
+
+    # load styles/before.styl if it's present in point entry
+    config.module.loaders = config.module.loaders.concat (
+      for appName, entry of apps
+        do (stylusParams = _.cloneDeep(stylusParams)
+            entry = if _.isArray(entry) then entry[0] else entry) ->
+          beforeStyl = entry + '/styles/before.styl'
+          return null unless fs.existsSync(beforeStyl)
+          stylusParams.import = [beforeStyl]
+          test: (absPath) ->
+            absPath.indexOf( entry ) isnt -1
+          loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+    ).filter((item) -> item?)
+
+    config.module.loaders.push
       test: /\.styl$/
       loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
-    ].concat config.module.loaders
 
     config.plugins = [
       new ExtractTextPlugin('[name].css')
@@ -91,13 +106,26 @@ module.exports = (options) ->
 
   gulp.task 'frontend-watch', ->
 
-    config.module.loaders = [
+    config.module.loaders.push
       test: /\.css$/
       loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
-    ,
+
+    # load styles/before.styl if it's present in point entry
+    config.module.loaders = config.module.loaders.concat (
+      for appName, entry of apps
+        do (stylusParams = _.cloneDeep(stylusParams)
+            entry = if _.isArray(entry) then entry[0] else entry) ->
+          beforeStyl = entry + '/styles/before.styl'
+          return null unless fs.existsSync(beforeStyl)
+          stylusParams.import = [beforeStyl]
+          test: (absPath) ->
+            absPath.indexOf( entry ) isnt -1
+          loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
+    ).filter((item) -> item?)
+
+    config.module.loaders.push
       test: /\.styl$/
       loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ stylusParams }"
-    ].concat config.module.loaders
 
     # Add webpack-dev-server and hot reloading
     for name, entry of config.entry
