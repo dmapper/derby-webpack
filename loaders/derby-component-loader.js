@@ -1,8 +1,12 @@
-module.exports = function(source) {
-  this.cacheable();
-  var that = this;
-  var res;
-  var match;
+var SourceNode = require('source-map').SourceNode;
+var SourceMapConsumer = require('source-map').SourceMapConsumer;
+var makeIdentitySourceMap = require('../lib/makeIdentitySourceMap');
+
+module.exports = function(source, map) {
+
+  if (this.cacheable) this.cacheable();
+
+  var separator = '\n\n';
   var name = source.match(/module\.exports\s*=\s*([A-Z]\w*)/);
   name = name && name[1];
 
@@ -14,16 +18,31 @@ module.exports = function(source) {
 
   // If class is being exported we treat it as a component and handle hot reload
   if (name) {
-    res = [
-      source,
-      addHotReload(name)
-    ].join('\n\n');
-  // otherwise just pipe the source code
-  } else {
-    res = source;
+    var appendText = addHotReload(name);
+
+    if (this.sourceMap === false) {
+      return this.callback(null, [
+        source,
+        appendText
+      ].join(separator));
+    }
+
+
+    if (!map) map = makeIdentitySourceMap(source, this.resourcePath);
+
+    var node = new SourceNode(null, null, null, [
+      SourceNode.fromStringWithSourceMap(source, new SourceMapConsumer(map)),
+      new SourceNode(null, null, this.resourcePath, appendText)
+    ]).join(separator);
+
+    var result = node.toStringWithSourceMap();
+
+    console.log(this.resourcePath, 'map');
+
+    return this.callback(null, result.code, result.map.toString());
   }
 
-  return res;
+  return this.callback(null, source, map);
 };
 
 function addHotReload(name) {
