@@ -64,7 +64,7 @@ module.exports = (options) ->
       filename: '[name].js'
     plugins: [
       # Don't bundle server-specific modules on client
-      new webpack.IgnorePlugin(/\.(server|server\.coffee|server\.js)$/)
+      new webpack.NormalModuleReplacementPlugin(/\.(server|server\.coffee|server\.js)$/, __dirname + '/../node_modules/node-noop')
     ]
 
   # ----------------------------------------------------------------
