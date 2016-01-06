@@ -62,7 +62,10 @@ module.exports = (options) ->
       pathInfo: true
       publicPath: "http://localhost:#{ options.webpackPort }/build/client/"
       filename: '[name].js'
-    plugins: []
+    plugins: [
+      # Don't bundle server-specific modules on client
+      new webpack.IgnorePlugin(/\.(server|server\.coffee|server\.js)$/)
+    ]
 
   # ----------------------------------------------------------------
   #   Build (Production)
@@ -78,7 +81,7 @@ module.exports = (options) ->
 
     config.module.loaders.push
       test: /\.css$/
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss"
+      loader: ExtractTextPlugin.extract 'style-loader', "raw!postcss"
 
     # load styles/before.styl if it's present in point entry
     config.module.loaders = config.module.loaders.concat (
@@ -87,7 +90,7 @@ module.exports = (options) ->
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
             /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
-          loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
+          loader: ExtractTextPlugin.extract 'style-loader', "raw!postcss!stylus?#{ JSON.stringify stylusParams }"
     )
     config.module.loaders.push
       test: (absPath) ->
@@ -97,7 +100,7 @@ module.exports = (options) ->
           if absPath.indexOf( entry ) isnt -1
             return false
         return true
-      loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
+      loader: ExtractTextPlugin.extract 'style-loader', "raw!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     config.plugins = [
       new ExtractTextPlugin('[name].css')
@@ -117,7 +120,7 @@ module.exports = (options) ->
 
     config.module.loaders.push
       test: /\.css$/
-      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss"
+      loader: "style!raw!postcss"
 
     # load styles/before.styl if it's present in point entry
     config.module.loaders = config.module.loaders.concat (
@@ -126,7 +129,7 @@ module.exports = (options) ->
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
             /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
-          loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
+          loader: "style!raw!postcss!stylus?#{ JSON.stringify stylusParams }"
     )
     config.module.loaders.push
       test: (absPath) ->
@@ -136,7 +139,7 @@ module.exports = (options) ->
           if absPath.indexOf( entry ) isnt -1
             return false
         return true
-      loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
+      loader: "style!raw!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     # Add webpack-dev-server and hot reloading
     for name, entry of config.entry
