@@ -9,14 +9,29 @@ _ = require 'lodash'
 fs = require 'fs'
 ExtractTextPlugin = require 'extract-text-webpack-plugin'
 
-apps = {}
-
 module.exports = (options) ->
   base = require('./base') options
 
   stylusParams = _.merge
     'include css': true
   , options.stylus || {}
+
+  apps = {}
+  # If apps are passed as array we treat them as folders in project root
+  if _.isArray(options.apps)
+    for appName in options.apps
+      apps[appName] = options.dirname + '/' + appName
+  else
+    apps = options.apps
+
+  beforeStylEntries = do ->
+    res = {}
+    for appName, entry of apps
+      entry = if _.isArray(entry) then entry[0] else entry
+      beforeStyl = entry + '/styles/before.styl'
+      if fs.existsSync(beforeStyl)
+        res[entry] = beforeStyl
+    res
 
   config = base.config
     target: 'web'
@@ -26,13 +41,6 @@ module.exports = (options) ->
         __dirname + '/../node_modules/racer-highway/lib/browser'
         options.dirname + '/node_modules/derby-parsing'
       ].concat (options.frontend.baseEntry || [])
-
-      # If apps are passed as array we treat them as folders in project root
-      if _.isArray(options.apps)
-        for appName in options.apps
-          apps[appName] = options.dirname + '/' + appName
-      else
-        apps = options.apps
 
       for appName, entry of apps
         entry = [entry] unless _.isArray(entry)
@@ -74,19 +82,21 @@ module.exports = (options) ->
 
     # load styles/before.styl if it's present in point entry
     config.module.loaders = config.module.loaders.concat (
-      for appName, entry of apps
-        do (stylusParams = _.cloneDeep(stylusParams)
-            entry = if _.isArray(entry) then entry[0] else entry) ->
-          beforeStyl = entry + '/styles/before.styl'
-          return null unless fs.existsSync(beforeStyl)
+      for entry, beforeStyl of beforeStylEntries
+        do (entry, stylusParams = _.cloneDeep(stylusParams)) ->
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
             /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
           loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
-    ).filter((item) -> item?)
-
+    )
     config.module.loaders.push
-      test: /\.styl$/
+      test: (absPath) ->
+        return false unless /\.styl$/.test(absPath)
+        # Don't process this if was processed previously by any entry-specific loader
+        for entry, beforeStyl of beforeStylEntries
+          if absPath.indexOf( entry ) isnt -1
+            return false
+        return true
       loader: ExtractTextPlugin.extract 'style-loader', "css?#{ if options.moduleMode then 'module&' else '' }-minimize&localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     config.plugins = [
@@ -111,19 +121,21 @@ module.exports = (options) ->
 
     # load styles/before.styl if it's present in point entry
     config.module.loaders = config.module.loaders.concat (
-      for appName, entry of apps
-        do (stylusParams = _.cloneDeep(stylusParams)
-            entry = if _.isArray(entry) then entry[0] else entry) ->
-          beforeStyl = entry + '/styles/before.styl'
-          return null unless fs.existsSync(beforeStyl)
+      for entry, beforeStyl of beforeStylEntries
+        do (entry, stylusParams = _.cloneDeep(stylusParams)) ->
           stylusParams.import = [beforeStyl]
           test: (absPath) ->
             /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
           loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
-    ).filter((item) -> item?)
-
+    )
     config.module.loaders.push
-      test: /\.styl$/
+      test: (absPath) ->
+        return false unless /\.styl$/.test(absPath)
+        # Don't process this if was processed previously by any entry-specific loader
+        for entry, beforeStyl of beforeStylEntries
+          if absPath.indexOf( entry ) isnt -1
+            return false
+        return true
       loader: "style!css?#{ if options.moduleMode then 'module&' else '' }localIdentName=[component]-[local]!postcss!stylus?#{ JSON.stringify stylusParams }"
 
     # Add webpack-dev-server and hot reloading
