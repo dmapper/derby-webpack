@@ -47,8 +47,8 @@ module.exports = (options) ->
     plugins: [
       new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, __dirname + '/../node_modules/node-noop')
       #new webpack.IgnorePlugin(/\.(css|styl)$/)
-      #new webpack.BannerPlugin('require("source-map-support").install();',
-      #                          { raw: true, entryOnly: false }),
+      new webpack.BannerPlugin('require("source-map-support").install();',
+                                { raw: true, entryOnly: false }),
       #new webpack.HotModuleReplacementPlugin({ quiet: true })
     ]
 
