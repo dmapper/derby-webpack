@@ -56,7 +56,10 @@ function addHotReload(name) {
     if (module.hot) {
       module.hot.accept();
       module.hot.accept('./index.jade', function(){
-        __name__.prototype.view = require('./index.jade');
+        var req = require.context('./', false, /^index\.jade$/);
+        if (req.keys().indexOf('./index.jade')) {
+          __name__.prototype.view = req('./index.jade');
+        }
         recreateComponent();
       });
       module.hot.dispose = function(data) {
