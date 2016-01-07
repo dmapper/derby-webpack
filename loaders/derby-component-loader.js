@@ -71,7 +71,7 @@ function addHotReload(name, loadView) {
     .replace(/__reloadView__/g, loadView
       ? [
           "module.hot.accept('./index.jade', function() {"
-        + "  __name__.prototype.view = req('./index.jade');"
+        + "  __name__.prototype.view = require('./index.jade');"
         + "  recreateComponent();"
         + "});"
         ].join('')
