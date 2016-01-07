@@ -1,6 +1,8 @@
 var SourceNode = require('source-map').SourceNode;
 var SourceMapConsumer = require('source-map').SourceMapConsumer;
 var makeIdentitySourceMap = require('../lib/makeIdentitySourceMap');
+var fs = require('fs');
+var path = require('path');
 
 module.exports = function(source, map) {
 
@@ -18,7 +20,8 @@ module.exports = function(source, map) {
 
   // If class is being exported we treat it as a component and handle hot reload
   if (name) {
-    var appendText = addHotReload(name);
+    var loadView = fs.existsSync( path.dirname( this.resourcePath ) + '/index.jade' );
+    var appendText = addHotReload(name, loadView);
 
     if (this.sourceMap === false) {
       return this.callback(null, [
@@ -45,7 +48,7 @@ module.exports = function(source, map) {
   return this.callback(null, source, map);
 };
 
-function addHotReload(name) {
+function addHotReload(name, loadView) {
   return ('(' + (function() {
 
     var recreateComponent = function() {
@@ -55,13 +58,7 @@ function addHotReload(name) {
 
     if (module.hot) {
       module.hot.accept();
-      module.hot.accept('./index.jade', function(){
-        var req = require.context('./', false, /^index\.jade$/);
-        if (req.keys().indexOf('./index.jade')) {
-          __name__.prototype.view = req('./index.jade');
-        }
-        recreateComponent();
-      });
+      __reloadView__
       module.hot.dispose = function(data) {
         data.restart = true;
       };
@@ -70,5 +67,14 @@ function addHotReload(name) {
       }
     }
 
-  }).toString() + ')();' ).replace(/__name__/g, name)
+  }).toString() + ')();' )
+    .replace(/__reloadView__/g, loadView
+      ? [
+          "module.hot.accept('./index.jade', function() {"
+        + "  __name__.prototype.view = req('./index.jade');"
+        + "  recreateComponent();"
+        + "});"
+        ].join('')
+      : ''
+    ).replace(/__name__/g, name)
 }
