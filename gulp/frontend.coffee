@@ -68,7 +68,7 @@ module.exports = (options) ->
     ]
 
   unless process.env.NODE_ENV is 'production'
-    config.devtool = options.frontend.devtool ? (options.devtool ? 'cheap-module-eval-source-map')
+    config.devtool = options.frontend.devtool ? (options.devtool ? 'source-map')
 
   # ----------------------------------------------------------------
   #   Build (Production)
