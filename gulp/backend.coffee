@@ -58,8 +58,7 @@ module.exports = (options) ->
       #new webpack.HotModuleReplacementPlugin({ quiet: true })
     ]
 
-  unless process.env.NODE_ENV is 'production'
-    config.devtool = options.backend.devtool ? (options.devtool ? 'source-map')
+  config.devtool = options.backend.devtool ? (options.devtool ? 'source-map')
 
   gulp.task 'backend-build', (done) ->
     config.plugins = [
