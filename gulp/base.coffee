@@ -30,9 +30,12 @@ module.exports = (options) ->
     resolve:
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
+  unless options.unsafeCache is false
+    config.resolve.unsafeCache = options.unsafeCache || true
+
   unless process.env.NODE_ENV is 'production'
-    config.devtool = 'source-map'
-    config.debug = true
+    config.devtool = options.devtool ? 'source-map'
+    config.debug = options.debug ? true
 
   config: (overrides) ->
     deepmerge config, (overrides || {})

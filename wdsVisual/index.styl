@@ -1,0 +1,61 @@
+_gutter = 5px
+_loader = 14px
+_height = 20px
+_delay = 0.3s
+_spinnerDelay = 0.5s
+
+html
+  background grey
+  &:before, &:after  
+    visibility hidden
+    transition opacity 0.5s 0.3s, visibility 0.5s 0.3s
+  &:before
+    opacity 0
+    box-sizing border-box
+    position fixed
+    bottom 0
+    left 0
+    right 0
+    height _height
+    line-height _height
+    padding-left 2 * _gutter + _loader
+    content attr(data-wds)
+    color white
+    font-family Verdana, sans-serif
+    font-size 16px
+    z-index 9999998
+  &[data-wdstype='success']:before
+    background-color #4EBA0F
+  &[data-wdstype='warning']:before
+    background-color #F37B1D
+  &[data-wdstype='error']:before
+    background-color #D60027
+  &:after
+    opacity 0
+    box-sizing border-box
+    content ''
+    position fixed
+    bottom ((_height - _loader) / 2)
+    left _gutter    
+    z-index 9999999
+    animation wds-spin _spinnerDelay infinite linear
+    border 2px solid transparent
+    border-left-color white
+    border-top-color white
+    border-radius 50%
+    display inline-block
+    width _loader
+    height @width
+    
+  &.-wds-show
+    &:before, &.-wds-spinner:after
+      transition opacity 0.5s, visibility 0.5s
+      visibility visible
+      opacity 1
+    
+@keyframes wds-spin
+  0%
+    transform rotate(0deg)
+  100%
+    transform rotate(360deg)
+    

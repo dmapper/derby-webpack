@@ -146,6 +146,7 @@ module.exports = (options) ->
       config.entry[name] = [
         __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:' + options.webpackPort
         __dirname + '/../node_modules/webpack/hot/dev-server'
+        __dirname + '/../wdsVisual'
       ].concat (entry || [])
       
     config.plugins = [
