@@ -30,11 +30,13 @@ module.exports = (options) ->
     resolve:
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
+  if options.noParse?
+    config.module.noParse = options.noParse
+
   unless options.unsafeCache is false
     config.resolve.unsafeCache = options.unsafeCache || true
 
   unless process.env.NODE_ENV is 'production'
-    config.devtool = options.devtool ? 'source-map'
     config.debug = options.debug ? true
 
   config: (overrides) ->

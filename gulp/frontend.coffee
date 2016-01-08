@@ -67,6 +67,9 @@ module.exports = (options) ->
       new webpack.NormalModuleReplacementPlugin(/\.(server|server\.coffee|server\.js)$/, __dirname + '/../node_modules/node-noop')
     ]
 
+  unless process.env.NODE_ENV is 'production'
+    config.devtool = options.frontend.devtool ? (options.devtool ? 'cheap-module-eval-source-map')
+
   # ----------------------------------------------------------------
   #   Build (Production)
   # ----------------------------------------------------------------
