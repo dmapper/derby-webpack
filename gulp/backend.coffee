@@ -10,14 +10,29 @@ first = true
 module.exports = (options) ->
   base = require('./base') options
 
+  apps = {}
+  # If apps are passed as array we treat them as folders in project root
+  if _.isArray(options.backendApps)
+    for appName in options.backendApps
+      apps[appName] = options.dirname + '/' + appName
+  else
+    apps = options.backendApps
+
   config = base.config
-    entry: [
-      #'webpack/hot/signal.js',
-    ].concat(options.backend.entry || [options.dirname + '/server'])
     target: 'node'
+    entry: do ->
+      res = {}
+      baseEntry = [
+        # Here may be some additional entry files in future
+      ].concat (options.backend.baseEntry || [])
+
+      for appName, entry of apps
+        entry = [entry] unless _.isArray(entry)
+        res[appName] = baseEntry.concat entry
+      res
     output:
       path: options.dirname + '/build'
-      filename: 'backend.js'
+      filename: '[name].js'
     node:
       __dirname: true
       __filename: true
