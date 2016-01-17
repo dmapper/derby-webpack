@@ -30,10 +30,12 @@ module.exports = class BaseConfig
         include: /\.yaml$/
         loader: 'json!yaml'
       ]
-      resolveLoader:
-        root: __dirname + '/../node_modules'
-      resolve:
-        extensions: ['', '.json', '.js', '.yaml', '.coffee']
+
+    @config.resolveLoader =
+      root: __dirname + '/../node_modules'
+
+    @config.resolve =
+      extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
     @config.plugins = []
 

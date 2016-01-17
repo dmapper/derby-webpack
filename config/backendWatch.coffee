@@ -10,6 +10,6 @@ module.exports = class BackendWatchConfig extends BackendConfig
     @config.cache = true
     @config.debug = true
     unless @options.unsafeCache is false
-      @config.module.resolve.unsafeCache = @options.unsafeCache
+      @config.resolve.unsafeCache = @options.unsafeCache
     @config.devtool = @options.backend.devtool ? @options.devtool
 
