@@ -7,9 +7,8 @@ module.exports = class BackendConfig extends BaseConfig
 
   constructor: ->
     super
-    _.defaultsDeep @options,
-      backend:
-        baseEntry: []
+    _.defaults @options,
+      backend: {}
       backendApps: ['server']
 
     @apps = @_sanitizeApps @options.backendApps

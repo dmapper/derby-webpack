@@ -4,7 +4,7 @@ module.exports = class BaseConfig
 
   constructor: (@options = {}) ->
 
-    _.defaultsDeep @options,
+    _.defaults @options,
       noParse: undefined
       unsafeCache: true
       dirname: process.cwd()

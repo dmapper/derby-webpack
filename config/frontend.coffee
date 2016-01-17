@@ -8,10 +8,9 @@ module.exports = class FrontendConfig extends BaseConfig
 
   constructor: ->
     super
-    _.defaultsDeep @options,
+    _.defaults @options,
       stylus: {}
-      frontend:
-        baseEntry: []
+      frontend: {}
       webpackPort: 3010
       apps: ['app']
 
