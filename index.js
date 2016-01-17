@@ -11,15 +11,15 @@ module.exports = (function() {
   } catch (e) {}
   if (process.env.WP_BACKEND) {
     if (process.env.WP_WATCH) {
-      return new BackendWatchConfig(options);
+      return (new BackendWatchConfig(options)).config;
     } else {
-      return new BackendBuildConfig(options);
+      return (new BackendBuildConfig(options)).config;
     }
   } else {
     if (process.env.WP_WATCH) {
-      return new FrontendWatchConfig(options);
+      return (new FrontendWatchConfig(options)).config;
     } else {
-      return new FrontendBuildConfig(options);
+      return (new FrontendBuildConfig(options)).config;
     }
   }
 })();
