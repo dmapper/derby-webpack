@@ -26,8 +26,8 @@ module.exports = class FrontendWatchConfig extends FrontendConfig
 
     @_initDevConfig()
 
-  _getActualStylusLoader: ->
-    'style!' + @_getActualStylusLoader.apply(this, arguments)
+  _getActualStylusLoader: (args...) ->
+    'style!' + super args...
 
   # Configure webpack-dev-server and hot reloading
   _initDevConfig: ->

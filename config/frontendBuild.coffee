@@ -37,5 +37,5 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
       })
     ]
 
-  _getActualStylusLoader: ->
-    ExtractTextPlugin.extract 'style-loader', @_getActualStylusLoader()
+  _getActualStylusLoader: (args...) ->
+    ExtractTextPlugin.extract 'style-loader', super args...
