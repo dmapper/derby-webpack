@@ -15,7 +15,7 @@ module.exports = class FrontendConfig extends BaseConfig
       apps: ['app']
 
     @apps = @_sanitizeApps @options.apps
-    @beforeStylusEntries = @_getBeforeStylusEntries @options.stylus
+    @beforeStylusEntries = @_getBeforeStylusEntries()
 
     @config.target = 'web'
 
@@ -88,11 +88,12 @@ module.exports = class FrontendConfig extends BaseConfig
         loader: @_getActualStylusLoader(import: [beforeStyl])
 
   _getStylusLoader: ->
-    test: (absPath) ->
-      return false unless /\.styl$/.test(absPath)
-      # Don't process this if was processed previously by any entry-specific loader
-      for entry, beforeStyl of @beforeStylusEntries
-        if absPath.indexOf( entry ) isnt -1
-          return false
-      return true
-    loader: @_getActualStylusLoader()
+    do (beforeStylusEntries = @beforeStylusEntries) ->
+      test: (absPath) ->
+        return false unless /\.styl$/.test(absPath)
+        # Don't process this if was processed previously by any entry-specific loader
+        for entry, beforeStyl of beforeStylusEntries
+          if absPath.indexOf( entry ) isnt -1
+            return false
+        return true
+      loader: @_getActualStylusLoader()
