@@ -40,7 +40,7 @@ module.exports = function(source, map) {
 
     var result = node.toStringWithSourceMap();
 
-    console.log(this.resourcePath, 'map');
+    //console.log(this.resourcePath, 'map');
 
     return this.callback(null, result.code, result.map.toString());
   }
