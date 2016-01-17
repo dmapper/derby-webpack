@@ -1,5 +1,6 @@
 fs = require 'fs'
 _ = require 'lodash'
+webpack = require 'webpack'
 BaseConfig = require './base'
 
 module.exports = class BackendConfig extends BaseConfig
