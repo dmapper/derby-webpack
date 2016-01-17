@@ -1,13 +1,12 @@
-_ = require 'lodash'
 fs = require 'fs'
+_ = require 'lodash'
 BaseConfig = require './base'
-FrontendConfig = require './frontend'
 
 module.exports = class BackendConfig extends BaseConfig
 
   constructor: ->
     super
-    _.defaultDeep @options,
+    _.defaultsDeep @options,
       backend:
         baseEntry: []
       backendApps: ['server']
