@@ -88,7 +88,7 @@ module.exports = class FrontendConfig extends BaseConfig
         loader: @_getActualStylusLoader(import: [beforeStyl])
 
   _getStylusLoader: ->
-    do (beforeStylusEntries = @beforeStylusEntries) ->
+    do (beforeStylusEntries = @beforeStylusEntries) =>
       test: (absPath) ->
         return false unless /\.styl$/.test(absPath)
         # Don't process this if was processed previously by any entry-specific loader
