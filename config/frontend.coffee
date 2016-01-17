@@ -1,6 +1,7 @@
 fs = require 'fs'
 _ = require 'lodash'
 autoprefixer = require 'autoprefixer-core'
+webpack = require 'webpack'
 BaseConfig = require './base'
 
 module.exports = class FrontendConfig extends BaseConfig

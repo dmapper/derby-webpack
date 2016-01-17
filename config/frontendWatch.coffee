@@ -10,7 +10,7 @@ module.exports = class FrontendWatchConfig extends FrontendConfig
     @config.cache = true
     @config.debug = true
     unless @options.unsafeCache is false
-      @config.resolve.unsafeCache = @options.unsafeCache
+      @config.module.resolve.unsafeCache = @options.unsafeCache
     @config.devtool = @options.frontend.devtool ? @options.devtool
 
     @config.postcss = @_getPostCss()
