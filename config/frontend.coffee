@@ -12,7 +12,7 @@ module.exports = class FrontendConfig extends BaseConfig
       stylus: {}
       frontend: {}
       webpackPort: 3010
-      apps: ['app']
+    @options.apps = ['app'] unless @options.apps
 
     @apps = @_sanitizeApps @options.apps
     @beforeStylusEntries = @_getBeforeStylusEntries()

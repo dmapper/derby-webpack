@@ -9,7 +9,7 @@ module.exports = class BackendConfig extends BaseConfig
     super
     _.defaults @options,
       backend: {}
-      backendApps: ['server']
+    @options.backendApps = ['server'] unless @options.backendApps
 
     @apps = @_sanitizeApps @options.backendApps
 
