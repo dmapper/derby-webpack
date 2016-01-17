@@ -44,8 +44,8 @@ module.exports = class FrontendConfig extends BaseConfig
       @config.devtool = devTool
 
   _getHeaderEntry: -> [
-    __dirname + '/../node_modules/racer-highway/lib/browser'
-    @options.dirname + '/node_modules/derby-parsing'
+    'racer-highway/lib/browser'
+    'derby-parsing'
   ]
 
   _getBeforeStylusEntries: ->

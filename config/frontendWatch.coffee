@@ -34,8 +34,8 @@ module.exports = class FrontendWatchConfig extends FrontendConfig
 
     for name, entry of @config.entry
       @config.entry[name] = [
-        __dirname + '/../node_modules/webpack-dev-server/client?http://localhost:' + @options.webpackPort
-        __dirname + '/../node_modules/webpack/hot/dev-server'
+        'webpack-dev-server/client?http://localhost:' + @options.webpackPort
+        'webpack/hot/dev-server'
         __dirname + '/../wdsVisual'
       ].concat (entry || [])
 
