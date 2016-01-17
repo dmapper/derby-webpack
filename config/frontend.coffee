@@ -75,19 +75,18 @@ module.exports = class FrontendConfig extends BaseConfig
       'include css': true
     _.merge {}, @options.stylus, DEFAULT_STYLUS
 
-  _getActualStylusLoader: ->
-    strStylusParams = JSON.stringify @_getStylusParams()
+  _getActualStylusLoader: (params = {}) ->
+    params = _.merge {}, @_getStylusParams(), params
+    strStylusParams = JSON.stringify params
     "raw!postcss!stylus?#{ strStylusParams }"
 
   # load styles/before.styl if it's present in point entry
   _getBeforeStylusLoaders: ->
-    stylusParams = @_getStylusParams()
     for entry, beforeStyl of @beforeStylusEntries
-      do (entry) ->
-        stylusParams.import = [beforeStyl]
+      do (entry) =>
         test: (absPath) ->
           /\.styl$/.test(absPath) and absPath.indexOf( entry ) isnt -1
-        loader: @_getActualStylusLoader()
+        loader: @_getActualStylusLoader(import: [beforeStyl])
 
   _getStylusLoader: ->
     test: (absPath) ->
