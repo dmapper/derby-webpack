@@ -3,7 +3,7 @@ var BackendWatchConfig = require('./config/backendWatch');
 var FrontendBuildConfig = require('./config/frontendBuild');
 var FrontendWatchConfig = require('./config/frontendWatch');
 
-module.exports = function() {
+module.exports = (function() {
   var options = {};
   try {
     require.resolve(process.cwd() + '/derby-webpack.config');
@@ -22,4 +22,4 @@ module.exports = function() {
       return new FrontendBuildConfig(options);
     }
   }
-};
+})();
