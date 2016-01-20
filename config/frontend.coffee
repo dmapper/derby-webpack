@@ -36,8 +36,7 @@ module.exports = class FrontendConfig extends BaseConfig
     @config.plugins = @config.plugins.concat [
       # Don't bundle server-specific modules on client
       new webpack.NormalModuleReplacementPlugin(
-          /\.(server|server\.coffee|server\.js)$/,
-          __dirname + '/../node_modules/node-noop')
+          /\.(server|server\.coffee|server\.js)$/, require.resolve('node-noop'))
     ]
 
     if devTool = @_getDevTool()

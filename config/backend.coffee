@@ -30,7 +30,7 @@ module.exports = class BackendConfig extends BaseConfig
     @config.recordsPath = @options.dirname + '/build/_records'
 
     @config.plugins = [
-      new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, __dirname + '/../node_modules/node-noop')
+      new webpack.NormalModuleReplacementPlugin(/\.(styl|css)$/, require.resolve('node-noop'))
       new webpack.BannerPlugin([
         'try {'
       , '  require.resolve("source-map-support");'
