@@ -53,8 +53,8 @@ module.exports = class BackendConfig extends BaseConfig
     (context, request, cb) ->
       inModules = false
       for moduleName in nodeModules
-        if /// node_modules\/#{ moduleName } ///.test(context) or
-            /// ^#{ moduleName } ///.test(request)
+        if /// node_modules\/#{ moduleName }(?:$|\/) ///.test(context) or
+            /// ^#{ moduleName }(?:$|\/) ///.test(request)
           inModules = true
           break
       if inModules
