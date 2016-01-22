@@ -1,6 +1,7 @@
 fs = require 'fs'
 _ = require 'lodash'
 autoprefixer = require 'autoprefixer-core'
+postcssFilenamePrefix = require 'postcss-filename-prefix'
 webpack = require 'webpack'
 BaseConfig = require './base'
 
@@ -60,6 +61,8 @@ module.exports = class FrontendConfig extends BaseConfig
     DEFAULT_POSTCSS_PLUGINS = [
       autoprefixer(browsers: ['last 2 version', '> 1%', 'ie 10', 'android 4'])
     ]
+    if @options.moduleMode
+      DEFAULT_POSTCSS_PLUGINS.push postcssFilenamePrefix()
     plugins = [plugins] unless _.isArray(plugins)
     ->
       DEFAULT_POSTCSS_PLUGINS.concat plugins
