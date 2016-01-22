@@ -1,6 +1,6 @@
 fs = require 'fs'
 _ = require 'lodash'
-autoprefixer = require 'autoprefixer-core'
+autoprefixer = require 'autoprefixer'
 postcssFilenamePrefix = require 'postcss-filename-prefix'
 webpack = require 'webpack'
 BaseConfig = require './base'
