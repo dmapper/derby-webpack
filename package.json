@@ -30,7 +30,7 @@
     "node-noop": "0.0.1",
     "postcss-filename-prefix": "git://github.com/cray0000/postcss-filename-prefix.git",
     "postcss-loader": "^0.8.0",
-    "racer-highway": "^7.0.0",
+    "racer-highway": ">=7.0.0",
     "raw-loader": "^0.5.1",
     "resolve": "^1.1.6",
     "source-map": "^0.5.3",
