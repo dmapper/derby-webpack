@@ -33,8 +33,9 @@
     consoleLogOrig.apply(console, arguments);
 
     if (typeof msg == 'string' || msg instanceof String) {
-
-      document.documentElement.dataset.wds = msg;
+      if (/^\[WDS\]/.test(msg)) {
+        document.documentElement.dataset.wds = msg;
+      }
 
       /* Handle Webpack Dev Server info logs */
       switch (msg) {
