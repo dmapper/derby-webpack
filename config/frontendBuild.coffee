@@ -14,7 +14,10 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
 
     @config.cache = false
     @config.debug = false
-    @config.devtool = 'source-map' if @options.frontend.productionSourceMaps
+    if @options.frontend.productionSourceMaps
+      @config.devtool = 'source-map'
+    else
+      delete @config.devtool
 
     @config.postcss = @_getPostCss [
       csswring() # minification
