@@ -40,9 +40,6 @@ module.exports = class FrontendConfig extends BaseConfig
           /\.(server|server\.coffee|server\.js)$/, require.resolve('node-noop'))
     ]
 
-    if devTool = @_getDevTool()
-      @config.devtool = devTool
-
   _getHeaderEntry: -> [
     'racer-highway/lib/browser'
     'derby-parsing'
@@ -66,10 +63,6 @@ module.exports = class FrontendConfig extends BaseConfig
     plugins = [plugins] unless _.isArray(plugins)
     ->
       DEFAULT_POSTCSS_PLUGINS.concat plugins
-
-  _getDevTool: ->
-    unless process.env.NODE_ENV is 'production'
-      @options.frontend.devtool ? @options.devtool
 
   _getStylusParams: ->
     DEFAULT_STYLUS =

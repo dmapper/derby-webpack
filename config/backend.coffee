@@ -61,6 +61,3 @@ module.exports = class BackendConfig extends BaseConfig
         cb null, "commonjs #{ request }"
       else
         cb()
-
-  _getDevTool: ->
-    @options.backend.devtool ? @options.devtool
