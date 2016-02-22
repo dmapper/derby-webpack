@@ -21,6 +21,9 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
       csswring() # minification
     ]
 
+    @config.stats ?= {}
+    @config.stats.children ?= false
+
     @config.module.loaders = @config.module.loaders.concat [
       test: /\.css$/
       loader: ExtractTextPlugin.extract 'style-loader', "raw!postcss"
