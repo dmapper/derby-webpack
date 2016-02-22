@@ -30,12 +30,15 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
 
     @config.module.loaders.push @_getStylusLoader()
 
+    uglifyOptions =
+      compress:
+        warnings: false
+    unless @options.frontend.productionSourceMaps
+      uglifyOptions.sourceMap = false
+
     @config.plugins = @config.plugins.concat [
       new ExtractTextPlugin('[name].css')
-      new webpack.optimize.UglifyJsPlugin({
-        compress:
-          warnings: false
-      })
+      new webpack.optimize.UglifyJsPlugin(uglifyOptions)
     ]
 
   _getActualStylusLoader: (args...) ->
