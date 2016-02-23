@@ -3,6 +3,7 @@ csswring = require 'csswring'
 webpack = require 'webpack'
 FrontendConfig = require './frontend'
 ExtractTextPlugin = require 'extract-text-webpack-plugin'
+AssetsPlugin = require 'assets-webpack-plugin'
 
 module.exports = class FrontendBuildConfig extends FrontendConfig
 
@@ -11,6 +12,9 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
     _.defaultsDeep @options,
       frontend:
         productionSourceMaps: false
+
+    # Add hash to bundles' filenames for long-term caching in production
+    @config.output.filename = '[name].[hash].js'
 
     @config.cache = false
     @config.debug = false
@@ -42,6 +46,12 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
     @config.plugins = @config.plugins.concat [
       new ExtractTextPlugin('[name].css')
       new webpack.optimize.UglifyJsPlugin(uglifyOptions)
+      # Write hash info metadata into json file
+      new AssetsPlugin({
+        filename: 'assets.json'
+        fullPath: false
+        path: @config.output.path
+      })
     ]
 
   _getActualStylusLoader: (args...) ->
