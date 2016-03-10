@@ -6,14 +6,17 @@ module.exports = class BackendBuildConfig extends BackendConfig
 
   constructor: ->
     super
+    _.defaultsDeep @options,
+      backend:
+        cache: false
+        uglify: true
 
-    @config.cache = false
+    @config.cache = @options.backend.cache
     @config.debug = false
     @config.devtool = 'source-map'
 
-    @config.plugins = @config.plugins.concat [
-      new webpack.optimize.UglifyJsPlugin({
+    if @options.backend.uglify
+      @config.plugins.push new webpack.optimize.UglifyJsPlugin({
         compress:
           warnings: false
       })
-    ]

@@ -12,11 +12,13 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
     _.defaultsDeep @options,
       frontend:
         productionSourceMaps: false
+        cache: false
+        uglify: true
 
     # Add hash to bundles' filenames for long-term caching in production
     @config.output.filename = '[name].[hash].js'
 
-    @config.cache = false
+    @config.cache = @options.frontend.cache
     @config.debug = false
     if @options.frontend.productionSourceMaps
       @config.devtool = 'source-map'
@@ -37,22 +39,22 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
 
     @config.module.loaders.push @_getStylusLoader()
 
-    uglifyOptions =
-      compress:
-        warnings: false
-    unless @options.frontend.productionSourceMaps
-      uglifyOptions.sourceMap = false
+    @config.plugins.push new ExtractTextPlugin('[name].css')
 
-    @config.plugins = @config.plugins.concat [
-      new ExtractTextPlugin('[name].css')
-      new webpack.optimize.UglifyJsPlugin(uglifyOptions)
-      # Write hash info metadata into json file
-      new AssetsPlugin({
-        filename: 'assets.json'
-        fullPath: false
-        path: @config.output.path
-      })
-    ]
+    if @options.frontend.uglify
+      uglifyOptions =
+        compress:
+          warnings: false
+      unless @options.frontend.productionSourceMaps
+        uglifyOptions.sourceMap = false
+      @config.plugins.push new webpack.optimize.UglifyJsPlugin(uglifyOptions)
+
+    # Write hash info metadata into json file
+    @config.plugins.push new AssetsPlugin({
+      filename: 'assets.json'
+      fullPath: false
+      path: @config.output.path
+    })
 
   _getActualStylusLoader: (args...) ->
     ExtractTextPlugin.extract 'style-loader', super args...
