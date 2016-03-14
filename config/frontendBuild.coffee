@@ -39,7 +39,7 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
 
     @config.module.loaders.push @_getStylusLoader()
 
-    @config.plugins.push new ExtractTextPlugin('[name].css')
+    @config.plugins.push new ExtractTextPlugin('[name].css', priorityModules: (@options.priorityModules || []))
 
     if @options.frontend.uglify
       uglifyOptions =

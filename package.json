@@ -21,7 +21,7 @@
     "coffee-loader": "^0.7.2",
     "csswring": "^4.2.1",
     "derby-jade": "^0.6.18",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "git://github.com/dmapper/extract-text-webpack-plugin.git",
     "html-util": "^0.2.1",
     "json-loader": "^0.5.2",
     "loader-utils": "^0.2.11",
