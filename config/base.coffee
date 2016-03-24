@@ -10,8 +10,12 @@ module.exports = class BaseConfig
       dirname: process.cwd()
       moduleMode: false
       devtool: 'source-map'
+      preLoaders: []
 
     @config = {}
+    if @options.moduleConfigs?
+      for key, val of @options.moduleConfigs
+        @config[key] = val
 
     @config.module =
       loaders: [
@@ -38,6 +42,9 @@ module.exports = class BaseConfig
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
 
     @config.plugins = []
+
+    if @options.preLoaders?
+      @config.module.preLoaders = @options.preLoaders
 
     if @options.noParse?
       @config.module.noParse = @options.noParse
