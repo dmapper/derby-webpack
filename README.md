@@ -24,6 +24,12 @@ view(is='template')
   array(is='tab' title='One') Ping
   array(is='tab' title='Two') Pong
 ```
+## Linters
+### Stylus linter
+Linter documentation [here](https://github.com/rossPatton/stylint).
+Configuration properties [here](https://github.com/rossPatton/stylint#custom-configuration).
+### Coffee Linter 
+Linter documentation [here](http://www.coffeelint.org/).
 
 ## MIT Licence
 
