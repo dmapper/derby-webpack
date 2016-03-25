@@ -28,8 +28,11 @@ view(is='template')
 ### Stylus linter
 Linter documentation [here](https://github.com/rossPatton/stylint).
 Configuration properties [here](https://github.com/rossPatton/stylint#custom-configuration).
+[Stylint](https://www.npmjs.com/package/stylint) and [Stylint-loader](https://github.com/guerrero/stylint-loader) loader should be installed to use stylint.
+
 ### Coffee Linter 
 Linter documentation [here](http://www.coffeelint.org/).
+[Coffelint](http://www.coffeelint.org/) and [coffeelint-loader](https://github.com/bline/coffeelint-loader) loader should be installed to use coffeeLinter.
 
 ## MIT Licence
 
