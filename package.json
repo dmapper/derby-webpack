@@ -6,8 +6,8 @@
   "scripts": {
     "start": "gulp run",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "derby-dev-helpers compile -cj",
-    "postpublish": "derby-dev-helpers revert -cj"
+    "prepublish": "derby-dev-helpers compile -c",
+    "postpublish": "derby-dev-helpers revert -c"
   },
   "author": {
     "name": "Pavel Zhukov",
