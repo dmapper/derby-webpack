@@ -1,13 +1,17 @@
 {
   "name": "derby-webpack",
+<<<<<<< HEAD
   "version": "0.4.2",
+=======
+  "version": "0.15.0",
+>>>>>>> subcomponents
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "gulp run",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "derby-dev-helpers compile -cj",
-    "postpublish": "derby-dev-helpers revert -cj"
+    "prepublish": "derby-dev-helpers compile -c",
+    "postpublish": "derby-dev-helpers revert -c"
   },
   "author": {
     "name": "Pavel Zhukov",
@@ -15,33 +19,35 @@
   },
   "license": "MIT",
   "dependencies": {
+    "assets-webpack-plugin": "^3.3.0",
     "async": "^1.3.0",
-    "autoprefixer-core": "^5.2.1",
+    "autoprefixer": "^6.3.1",
     "coffee-loader": "^0.7.2",
-    "css-loader": "git://github.com/dmapper/css-loader.git",
-    "csswring": "^3.0.5",
-    "deep-merge": "^1.0.0",
+    "csswring": "^4.2.1",
     "derby-jade": "^0.6.18",
-    "derby-stylus": "^0.1.0",
-    "extract-text-webpack-plugin": "^0.8.2",
-    "gulp": "^3.9.0",
+    "extract-text-webpack-plugin": "git://github.com/dmapper/extract-text-webpack-plugin.git",
+    "html-util": "^0.2.1",
     "json-loader": "^0.5.2",
     "loader-utils": "^0.2.11",
     "lodash": "^3.10.0",
     "node-libs-browser": "^0.5.2",
     "node-noop": "0.0.1",
-    "nodemon": "^1.3.7",
-    "postcss-loader": "^0.5.1",
-    "racer-highway": "^3.0.2",
-    "style-loader": "git://github.com/dmapper/style-loader.git",
-    "stylus-loader": "~1.3.0",
-    "webpack": "^1.10.1",
+    "postcss-filename-prefix": "git://github.com/cray0000/postcss-filename-prefix.git",
+    "postcss-loader": "^0.8.0",
+    "raw-loader": "^0.5.1",
+    "resolve": "^1.1.6",
+    "source-map": "^0.5.3",
+    "source-map-support": "^0.4.0",
+    "style-loader": "~0.13.0",
+    "stylus-loader": "~1.5.1",
+    "webpack": "1.12.14",
     "webpack-dev-server": "1.14.0",
     "yaml-loader": "^0.1.0"
   },
   "peerDependencies": {
     "derby": "*",
     "racer": "*",
+    "racer-highway": ">=6.1.0",
     "derby-parsing": "*",
     "derby-templates": "*"
   },

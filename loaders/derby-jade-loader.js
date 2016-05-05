@@ -1,9 +1,9 @@
-var files = require('derby/lib/files');
+var files = require('../lib/files');
 var derbyJade = require('derby-jade');
 var derbyTemplates = require('derby-templates');
-var path = require('path');
 var async = require('async');
 var loaderUtils = require("loader-utils");
+var path = require('path');
 require('derby-parsing');
 
 module.exports = function(source) {
@@ -14,31 +14,22 @@ module.exports = function(source) {
   var query = loaderUtils.parseQuery(this.query);
   var moduleMode = query.modules || query.module;
 
-  var dummyApp = {
-    compilers: [],
-    viewExtensions: []
+  // Ignore moduleMode for files which don't start with a capital letter
+  if (moduleMode) {
+    if (ignoreModuleMode(this.resourcePath)) moduleMode = false;
+  }
+
+  var compiler = function(file, fileName) {
+    return derbyJade.compiler(file, fileName, undefined, {moduleMode: moduleMode});
   };
-  derbyJade(dummyApp, {globals: {moduleMode: moduleMode}});
 
   var that = this;
-  var locals = {};
   var views;
 
   async.series([
-    // function(cb){
-    //   that.resolve(that.context, './index.styl', function(err, cssPath) {
-    //     if (cssPath) {
-    //       that.loadModule(cssPath, function(err, source) {
-    //         cb();
-    //       });
-    //     } else {
-    //       cb();
-    //     }
-    //   });
-    // },
     function(cb){
-      var i;
-      var data = files.loadViewsSync(dummyApp, that.resourcePath, undefined);
+      var i, len;
+      var data = files.loadViewsSync(that.resourcePath, undefined, '.jade', compiler);
       views = new derbyTemplates.templates.Views();
       views.polyfillMissingViews = true;
       for (i = 0, len = data.views.length; i < len; i++) {
@@ -58,54 +49,18 @@ module.exports = function(source) {
         + 'exports.filename = \'' + that.resourcePath + '\';');
   });
 
-
-  //if (/partial\.jade/.test(this.resourcePath)) {
-  //  return cb(null, 'module.exports = '
-  //      + views.serialize({server: true, minify: true}) + ';');
-  //}
-  //this.resolve(this.context, './partial.jade', function(err, path) {
-  //  that.resolve(that.context, './Topbar/index.styl', function(err, cssPath) {
-  //    that.loadModule(cssPath, function(err, cssSource) {
-  //      var locals = that.exec(cssSource, cssPath).locals || {};
-  //      that.loadModule(path, function(err, source) {
-  //        cb(null, 'module.exports = '
-  //            + views.serialize({server: true, minify: true}) + ';');
-  //      });
-  //    });
-  //  });
-  //});
-
 };
 
-function templateName(filepath) {
-  var templateName = path.basename(filepath, path.extname(filepath));
-  if (templateName === 'index') {
-    templateName = path.basename(path.dirname(filepath));
+function ignoreModuleMode(filePath) {
+  var fileName = path.basename(filePath);
+  var name = fileName.split('.')[0];
+  if (name === 'index') {
+    var parts = fileName.split('/');
+    name = parts[parts.length] - 2;
   }
-  return templateName;
+  return ignoreFileName(name)
 }
 
-function addHotReload(src, filepath) {
-  var templateName = templateName(filepath);
-  var res = src.match(/\.prototype\.init\s*=\s*\{/);
-  res = ((res == null) ? res : res[0])
-  if (res != null) {
-    var pos = src.indexOf(res) + res.length
-  }
-  if (module.hot) {
-    module.hot.accept('./index.jade', function(){
-
-    });
-  }
-}
-
-function partialTemplate(src, filepath) {
-  var templateName = templateName(filepath);
-  src = src
-      .replace(/^module\.exports = /, '')
-      .replace(/;$/, '');
-  return '(' + src + ")(derbyTemplates, views, "
-      + "(namespace ? namespace + ':' : '')"
-      + " + '" + templateName + "'"
-      + ');'
+function ignoreFileName(fileName) {
+  return /^[^A-Z]/.test(fileName);
 }
