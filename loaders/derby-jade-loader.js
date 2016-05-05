@@ -3,6 +3,7 @@ var derbyJade = require('derby-jade');
 var derbyTemplates = require('derby-templates');
 var async = require('async');
 var loaderUtils = require("loader-utils");
+var path = require('path');
 require('derby-parsing');
 
 module.exports = function(source) {
@@ -12,6 +13,11 @@ module.exports = function(source) {
 
   var query = loaderUtils.parseQuery(this.query);
   var moduleMode = query.modules || query.module;
+
+  // Ignore moduleMode for files which don't start with a capital letter
+  if (moduleMode) {
+    if (ignoreModuleMode(this.resourcePath)) moduleMode = false;
+  }
 
   var compiler = function(file, fileName) {
     return derbyJade.compiler(file, fileName, undefined, {moduleMode: moduleMode});
@@ -44,3 +50,17 @@ module.exports = function(source) {
   });
 
 };
+
+function ignoreModuleMode(filePath) {
+  var fileName = path.basename(filePath);
+  var name = fileName.split('.')[0];
+  if (name === 'index') {
+    var parts = fileName.split('/');
+    name = parts[parts.length] - 2;
+  }
+  return ignoreFileName(name)
+}
+
+function ignoreFileName(fileName) {
+  return /^[^A-Z]/.test(fileName);
+}
