@@ -55,10 +55,10 @@ function ignoreModuleMode(filePath) {
   var fileName = path.basename(filePath);
   var name = fileName.split('.')[0];
   if (name === 'index') {
-    var parts = fileName.split('/');
+    var parts = filePath.split('/');
     name = parts[parts.length] - 2;
   }
-  return ignoreFileName(name)
+  return ignoreFileName(name);
 }
 
 function ignoreFileName(fileName) {
