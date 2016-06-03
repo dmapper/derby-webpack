@@ -37,9 +37,11 @@ module.exports = class BaseConfig
 
     @config.resolveLoader =
       root: __dirname + '/../node_modules'
+      fallback: __dirname + '/../..'
 
     @config.resolve =
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
+      fallback: __dirname + '/../..'
 
     @config.plugins = []
 
