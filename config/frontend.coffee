@@ -12,7 +12,7 @@ module.exports = class FrontendConfig extends BaseConfig
     _.defaults @options,
       stylus: {}
       frontend: {}
-      webpackPort: 3010
+      webpackPort: process.env.DEVSERVER_PORT || 3010
     @options.apps = ['app'] unless @options.apps
 
     @apps = @_sanitizeApps @options.apps
