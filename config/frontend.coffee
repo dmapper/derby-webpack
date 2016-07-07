@@ -4,6 +4,7 @@ autoprefixer = require 'autoprefixer'
 postcssFilenamePrefix = require 'postcss-filename-prefix'
 webpack = require 'webpack'
 BaseConfig = require './base'
+url = require 'url'
 
 module.exports = class FrontendConfig extends BaseConfig
 
@@ -12,7 +13,14 @@ module.exports = class FrontendConfig extends BaseConfig
     _.defaults @options,
       stylus: {}
       frontend: {}
-      webpackPort: process.env.DEVSERVER_PORT || 3010
+
+    # If DEVSERVER_URL is specified, get port from it
+    if process.env.DEVSERVER_URL
+      @options.webpackPort = url.parse(process.env.DEVSERVER_URL).port || process.env.DEVSERVER_PORT || 80
+
+    @options.webpackPort ?= process.env.DEVSERVER_PORT || 3010
+    @options.webpackUrl ?= process.env.DEVSERVER_URL || "http://localhost:#{ @options.webpackPort }"
+
     @options.apps = ['app'] unless @options.apps
 
     @apps = @_sanitizeApps @options.apps

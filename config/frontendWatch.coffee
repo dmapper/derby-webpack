@@ -34,7 +34,7 @@ module.exports = class FrontendWatchConfig extends FrontendConfig
 
     for name, entry of @config.entry
       @config.entry[name] = [
-        'webpack-dev-server/client?http://localhost:' + @options.webpackPort
+        "webpack-dev-server/client?#{ @options.webpackUrl }"
         'webpack/hot/dev-server'
         __dirname + '/../wdsVisual'
       ].concat (entry || [])
@@ -51,5 +51,5 @@ module.exports = class FrontendWatchConfig extends FrontendConfig
       stats: colors: true
       noInfo: true
       headers: 'Access-Control-Allow-Origin': '*'
-      host: 'localhost'
+      host: '0.0.0.0'
       port: @options.webpackPort
