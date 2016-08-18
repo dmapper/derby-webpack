@@ -35,6 +35,10 @@ module.exports = class BaseConfig
         loader: 'json!yaml'
       ]
 
+    # Append additional loaders to the beginning of default loaders array
+    if @options.loaders? and _.isArray(@options.loaders)
+      @config.module.loaders = @options.loaders.concat @config.module.loaders
+
     @config.resolveLoader =
       root: __dirname + '/../node_modules'
       fallback: __dirname + '/../..'
@@ -43,10 +47,16 @@ module.exports = class BaseConfig
       extensions: ['', '.json', '.js', '.yaml', '.coffee']
       fallback: __dirname + '/../..'
 
+    if @options.resolve?.alias?
+      @config.resolve.alias = @options.resolve.alias
+
     @config.plugins = []
 
     if @options.preLoaders?
       @config.module.preLoaders = @options.preLoaders
+
+    if @options.postLoaders?
+      @config.module.postLoaders = @options.postLoaders
 
     if @options.noParse?
       @config.module.noParse = @options.noParse

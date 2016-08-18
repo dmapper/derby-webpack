@@ -34,7 +34,19 @@ module.exports = class FrontendConfig extends BaseConfig
       include: /racer-highway\/lib\/browser\/index\.js$/
       loaders: [__dirname + '/../loaders/racer-highway-loader.js']
     ]
-    # POSTCSS HERE
+
+    # Append additional loaders to the beginning of default loaders array
+    if @options.frontend?.loaders? and _.isArray(@options.frontend.loaders)
+      @config.module.loaders = @options.frontend.loaders.concat @config.module.loaders
+
+    if @options.frontend?.preLoaders? and _.isArray(@options.frontend.preLoaders)
+      @config.module.preLoaders = @options.frontend.preLoaders.concat (@config.module.preLoaders || [])
+
+    if @options.frontend?.postLoaders? and _.isArray(@options.frontend.postLoaders)
+      @config.module.postLoaders = @options.frontend.postLoaders.concat (@config.module.postLoaders || [])
+
+    if @options.frontend?.resolve?.alias?
+      @config.resolve.alias = @options.frontend.resolve.alias
 
     @config.output =
       path: @options.dirname + '/build/client'

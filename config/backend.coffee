@@ -17,6 +17,19 @@ module.exports = class BackendConfig extends BaseConfig
 
     @config.entry = @_getEntries @apps, @options.backend.baseEntry
 
+    # Append additional loaders to the beginning of default loaders array
+    if @options.backend?.loaders? and _.isArray(@options.backend.loaders)
+      @config.module.loaders = @options.backend.loaders.concat @config.module.loaders
+
+    if @options.backend?.preLoaders? and _.isArray(@options.backend.preLoaders)
+      @config.module.preLoaders = @options.backend.preLoaders.concat (@config.module.preLoaders || [])
+
+    if @options.backend?.postLoaders? and _.isArray(@options.backend.postLoaders)
+      @config.module.postLoaders = @options.backend.postLoaders.concat (@config.module.postLoaders || [])
+
+    if @options.backend?.resolve?.alias?
+      @config.resolve.alias = @options.backend.resolve.alias
+
     @config.output =
       path: @options.dirname + '/build'
       filename: '[name].js'
