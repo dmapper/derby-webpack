@@ -58,10 +58,22 @@ module.exports = class BackendConfig extends BaseConfig
   # within node_modules as an external dependency.
   # Bundle only modules which are derby components.
   _getExternalsFn: ->
+    npmScopes = @options?.npmScopes || []
+    includeList = @options?.includeList || []
 
     # Get list of modules excluding derby components (dm- or d-)
-    nodeModules = fs.readdirSync(@options.dirname + '/node_modules').filter (name) ->
-      name isnt '.bin' and not /^dm-/.test(name) and not /^d-/.test(name)
+    nodeModules = fs.readdirSync(@options.dirname + '/node_modules').filter (name) =>
+      name isnt '.bin'
+    .map (name) =>
+      if npmScopes.indexOf(name) isnt -1
+        return fs.readdirSync(@options.dirname + '/node_modules/' + name).map (subname) =>
+          name + '/' + subname
+      return name
+
+    nodeModules = _.flatten nodeModules
+
+    nodeModules = nodeModules.filter (name) =>
+      includeList.indexOf(name) is -1
 
     (context, request, cb) ->
       inModules = false
