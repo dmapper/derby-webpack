@@ -104,11 +104,36 @@ module.exports = class FrontendConfig extends BaseConfig
 
   _getStylusLoader: ->
     do (beforeStylusEntries = @beforeStylusEntries) =>
-      test: (absPath) ->
-        return false unless /\.styl$/.test(absPath)
-        # Don't process this if was processed previously by any entry-specific loader
-        for entry, beforeStyl of beforeStylusEntries
-          if absPath.indexOf( entry ) isnt -1
-            return false
-        return true
-      loader: @_getActualStylusLoader()
+      stylusApps = @options.stylusApps
+
+      result = for appName, options of stylusApps
+        do (options) =>
+          test: (absPath) ->
+            return false unless /\.styl$/.test(absPath)
+            return false if not options or not test = options.test
+            shouldCompiled = true
+            for entry, beforeStyl of beforeStylusEntries
+              if absPath.indexOf( entry ) isnt -1
+                shouldCompiled = false
+                break
+            shouldCompiled and new RegExp(test).test absPath
+          # что будет если вернуться options целиком (где будет поле тест)
+          loader: @_getActualStylusLoader(import: options.import)
+
+      result.push
+        test: (absPath) =>
+          return false unless /\.styl$/.test(absPath)
+          # Don't process this if was processed previously by any entry-specific loader
+          shouldCompiled = true
+          for entry, beforeStyl of beforeStylusEntries
+            if absPath.indexOf( entry ) isnt -1
+              shouldCompiled = false
+              break
+          shouldCompiled and
+            for appName, options of stylusApps
+              if not options or not options.test
+                shouldCompiled = false
+                break
+          shouldCompiled
+        loader: @_getActualStylusLoader()
+      result
