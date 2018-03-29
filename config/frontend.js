@@ -155,7 +155,7 @@
       return (function(_this) {
         return function(beforeStylusEntries) {
           var item, result, stylusImports;
-          stylusImports = _this.options.stylusImports;
+          stylusImports = _this.options.stylusImports || [];
           result = (function() {
             var i, len, results;
             results = [];

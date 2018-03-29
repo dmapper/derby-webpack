@@ -104,7 +104,7 @@ module.exports = class FrontendConfig extends BaseConfig
 
   _getStylusLoader: ->
     do (beforeStylusEntries = @beforeStylusEntries) =>
-      stylusImports = @options.stylusImports
+      stylusImports = @options.stylusImports || []
       result = for item in stylusImports when item.test
         do ({ test, import: _import } = item) =>
           test: (absPath) ->
