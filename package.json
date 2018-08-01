@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "coffee-script": "^1.9.3",
-    "derby-dev-helpers": "^0.1.2"
+    "derby-dev-helpers": "^0.1.2",
+    "webpack-bundle-analyzer": "^2.13.1"
   }
 }

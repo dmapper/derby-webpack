@@ -52,6 +52,10 @@ module.exports = class BaseConfig
 
     @config.plugins = []
 
+    if bundleAnalyzer = @options.bundleAnalyzer
+      BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+      @config.plugins.push new BundleAnalyzerPlugin(bundleAnalyzer)
+
     if @options.preLoaders?
       @config.module.preLoaders = @options.preLoaders
 
