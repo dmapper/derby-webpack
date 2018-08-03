@@ -1,4 +1,4 @@
-_ = require 'lodash'
+defaultsDeep = require 'lodash/defaultsDeep'
 webpack = require 'webpack'
 BackendConfig = require './backend'
 
@@ -6,7 +6,7 @@ module.exports = class BackendBuildConfig extends BackendConfig
 
   constructor: ->
     super
-    _.defaultsDeep @options,
+    defaultsDeep @options,
       backend:
         cache: false
         uglify: true
