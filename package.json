@@ -1,6 +1,6 @@
 {
   "name": "derby-webpack",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "html-util": "^0.2.1",
     "json-loader": "^0.5.2",
     "loader-utils": "^0.2.11",
-    "lodash": "^3.10.0",
+    "lodash": "^4.17.10",
     "node-libs-browser": "^0.5.2",
     "node-noop": "0.0.1",
     "postcss-filename-prefix": "git://github.com/cray0000/postcss-filename-prefix.git",
