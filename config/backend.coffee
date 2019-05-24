@@ -1,5 +1,7 @@
 fs = require 'fs'
-_ = require 'lodash'
+defaults = require 'lodash/defaults'
+isArray = require 'lodash/isArray'
+flatten = require 'lodash/flatten'
 webpack = require 'webpack'
 BaseConfig = require './base'
 
@@ -7,7 +9,7 @@ module.exports = class BackendConfig extends BaseConfig
 
   constructor: ->
     super
-    _.defaults @options,
+    defaults @options,
       backend: {}
     @options.backendApps = ['server'] unless @options.backendApps
 
@@ -18,13 +20,13 @@ module.exports = class BackendConfig extends BaseConfig
     @config.entry = @_getEntries @apps, @options.backend.baseEntry
 
     # Append additional loaders to the beginning of default loaders array
-    if @options.backend?.loaders? and _.isArray(@options.backend.loaders)
+    if @options.backend?.loaders? and isArray(@options.backend.loaders)
       @config.module.loaders = @options.backend.loaders.concat @config.module.loaders
 
-    if @options.backend?.preLoaders? and _.isArray(@options.backend.preLoaders)
+    if @options.backend?.preLoaders? and isArray(@options.backend.preLoaders)
       @config.module.preLoaders = @options.backend.preLoaders.concat (@config.module.preLoaders || [])
 
-    if @options.backend?.postLoaders? and _.isArray(@options.backend.postLoaders)
+    if @options.backend?.postLoaders? and isArray(@options.backend.postLoaders)
       @config.module.postLoaders = @options.backend.postLoaders.concat (@config.module.postLoaders || [])
 
     if @options.backend?.resolve?.alias?
@@ -70,7 +72,7 @@ module.exports = class BackendConfig extends BaseConfig
           name + '/' + subname
       return name
 
-    nodeModules = _.flatten nodeModules
+    nodeModules = flatten nodeModules
 
     nodeModules = nodeModules.filter (name) =>
       includeList.indexOf(name) is -1

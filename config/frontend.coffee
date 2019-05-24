@@ -1,5 +1,9 @@
 fs = require 'fs'
-_ = require 'lodash'
+defaults = require 'lodash/defaults'
+isArray = require 'lodash/isArray'
+merge = require 'lodash/merge'
+mergeWith = require 'lodash/mergeWith'
+union = require 'lodash/union'
 autoprefixer = require 'autoprefixer'
 postcssFilenamePrefix = require 'postcss-filename-prefix'
 webpack = require 'webpack'
@@ -10,7 +14,7 @@ module.exports = class FrontendConfig extends BaseConfig
 
   constructor: ->
     super
-    _.defaults @options,
+    defaults @options,
       stylus: {}
       frontend: {}
 
@@ -36,13 +40,13 @@ module.exports = class FrontendConfig extends BaseConfig
     ]
 
     # Append additional loaders to the beginning of default loaders array
-    if @options.frontend?.loaders? and _.isArray(@options.frontend.loaders)
+    if @options.frontend?.loaders? and isArray(@options.frontend.loaders)
       @config.module.loaders = @options.frontend.loaders.concat @config.module.loaders
 
-    if @options.frontend?.preLoaders? and _.isArray(@options.frontend.preLoaders)
+    if @options.frontend?.preLoaders? and isArray(@options.frontend.preLoaders)
       @config.module.preLoaders = @options.frontend.preLoaders.concat (@config.module.preLoaders || [])
 
-    if @options.frontend?.postLoaders? and _.isArray(@options.frontend.postLoaders)
+    if @options.frontend?.postLoaders? and isArray(@options.frontend.postLoaders)
       @config.module.postLoaders = @options.frontend.postLoaders.concat (@config.module.postLoaders || [])
 
     if @options.frontend?.resolve?.alias?
@@ -68,7 +72,7 @@ module.exports = class FrontendConfig extends BaseConfig
   _getBeforeStylusEntries: ->
     res = {}
     for appName, entry of @apps
-      entry = if _.isArray(entry) then entry[0] else entry
+      entry = if isArray(entry) then entry[0] else entry
       beforeStyl = entry + '/styles/before.styl'
       if fs.existsSync(beforeStyl)
         res[entry] = beforeStyl
@@ -80,22 +84,29 @@ module.exports = class FrontendConfig extends BaseConfig
     ]
     if @options.moduleMode
       DEFAULT_POSTCSS_PLUGINS.push postcssFilenamePrefix()
-    plugins = [plugins] unless _.isArray(plugins)
+    plugins = [plugins] unless isArray(plugins)
     ->
       DEFAULT_POSTCSS_PLUGINS.concat plugins
 
   _getStylusParams: ->
     DEFAULT_STYLUS =
       'include css': true
-    _.merge {}, @options.stylus, DEFAULT_STYLUS
+    merge {}, @options.stylus, DEFAULT_STYLUS
 
   _getActualStylusLoader: (params = {}, override) ->
     stylusParams = @_getStylusParams()
     if override
       params = Object.assign {}, stylusParams, params
     else
-      params = _.merge {}, stylusParams, params
-      params.import = _.union stylusParams.import, params.import
+      params = mergeWith Object.assign({}, stylusParams), params, \
+        (objValue, srcValue) ->
+          if isArray(objValue)
+            return union objValue, srcValue
+          else
+            return srcValue
+    console.log '----------'
+    console.log params
+    console.log '----------'
     strStylusParams = JSON.stringify params
     "raw!postcss!stylus?#{ strStylusParams }"
 

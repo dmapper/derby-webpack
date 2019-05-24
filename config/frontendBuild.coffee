@@ -1,4 +1,4 @@
-_ = require 'lodash'
+defaultsDeep = require 'lodash/defaultsDeep'
 csswring = require 'csswring'
 webpack = require 'webpack'
 FrontendConfig = require './frontend'
@@ -9,7 +9,7 @@ module.exports = class FrontendBuildConfig extends FrontendConfig
 
   constructor: ->
     super
-    _.defaultsDeep @options,
+    defaultsDeep @options,
       frontend:
         productionSourceMaps: false
         cache: false

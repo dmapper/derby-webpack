@@ -1,10 +1,11 @@
-_ = require 'lodash'
+defaults = require 'lodash/defaults'
+isArray = require 'lodash/isArray'
 
 module.exports = class BaseConfig
 
   constructor: (@options = {}) ->
 
-    _.defaults @options,
+    defaults @options,
       noParse: undefined
       unsafeCache: true
       dirname: process.cwd()
@@ -36,7 +37,7 @@ module.exports = class BaseConfig
       ]
 
     # Append additional loaders to the beginning of default loaders array
-    if @options.loaders? and _.isArray(@options.loaders)
+    if @options.loaders? and isArray(@options.loaders)
       @config.module.loaders = @options.loaders.concat @config.module.loaders
 
     @config.resolveLoader =
@@ -52,6 +53,10 @@ module.exports = class BaseConfig
 
     @config.plugins = []
 
+    if bundleAnalyzer = @options.bundleAnalyzer
+      BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+      @config.plugins.push new BundleAnalyzerPlugin(bundleAnalyzer)
+
     if @options.preLoaders?
       @config.module.preLoaders = @options.preLoaders
 
@@ -64,7 +69,7 @@ module.exports = class BaseConfig
   _sanitizeApps: (apps) ->
     res = {}
     # If apps are passed as array we treat them as folders in project root
-    if _.isArray(apps)
+    if isArray(apps)
       for appName in apps
         res[appName] = @options.dirname + '/' + appName
     else
@@ -77,6 +82,6 @@ module.exports = class BaseConfig
     baseEntry = @_getHeaderEntry().concat(baseEntry)
     res = {}
     for appName, entry of apps
-      entry = [entry] unless _.isArray(entry)
+      entry = [entry] unless isArray(entry)
       res[appName] = baseEntry.concat entry
     res
