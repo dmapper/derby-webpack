@@ -89,8 +89,13 @@ module.exports = class FrontendConfig extends BaseConfig
       'include css': true
     _.merge {}, @options.stylus, DEFAULT_STYLUS
 
-  _getActualStylusLoader: (params = {}) ->
-    params = _.merge {}, @_getStylusParams(), params
+  _getActualStylusLoader: (params = {}, override) ->
+    stylusParams = @_getStylusParams()
+    if override
+      params = Object.assign {}, stylusParams, params
+    else
+      params = _.merge {}, stylusParams, params
+      params.import = _.union stylusParams.import, params.import
     strStylusParams = JSON.stringify params
     "raw!postcss!stylus?#{ strStylusParams }"
 
@@ -115,7 +120,7 @@ module.exports = class FrontendConfig extends BaseConfig
                 shouldCompiled = false
                 break
             shouldCompiled and new RegExp(test).test absPath
-          loader: @_getActualStylusLoader(import: _import)
+          loader: @_getActualStylusLoader(import: _import, true)
 
       # Don't process this if was processed
       # previously by any entry-specific loader
