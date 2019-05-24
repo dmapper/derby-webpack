@@ -144,9 +144,6 @@
           }
         });
       }
-      console.log('----------');
-      console.log(params);
-      console.log('----------');
       strStylusParams = JSON.stringify(params);
       return "raw!postcss!stylus?" + strStylusParams;
     };
