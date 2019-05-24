@@ -104,9 +104,6 @@ module.exports = class FrontendConfig extends BaseConfig
             return union objValue, srcValue
           else
             return srcValue
-    console.log '----------'
-    console.log params
-    console.log '----------'
     strStylusParams = JSON.stringify params
     "raw!postcss!stylus?#{ strStylusParams }"
 
