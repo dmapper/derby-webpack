@@ -34,7 +34,6 @@
     "postcss-filename-prefix": "https://github.com/cray0000/postcss-filename-prefix.git",
     "postcss-loader": "^0.9.1",
     "racer": "https://github.com/dmapper/racer.git#sync-upstream4",
-    "racer-highway": "^8.0.0",
     "raw-loader": "^0.5.1",
     "resolve": "^1.1.6",
     "source-map": "^0.5.3",
@@ -49,7 +48,7 @@
   "peerDependencies": {
     "derby": "*",
     "racer": "*",
-    "racer-highway": ">=6.1.0",
+    "racer-highway": "*",
     "derby-parsing": "*",
     "derby-templates": "*"
   },
